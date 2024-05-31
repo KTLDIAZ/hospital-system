@@ -1,14 +1,13 @@
-import { Request, Response } from 'express'
 import { User } from '../schemas/user'
 import { Types } from 'mongoose'
 import { AppUser } from './interfaces/user.interface'
-import { DOCTOR_TYPE, PATIENT_TYPE, STAFF_TYPE, userTypes } from '../common/user-types';
+import { DOCTOR_TYPE, PATIENT_TYPE, STAFF_TYPE } from '../common/user-types'
 
 export class UserModel {
 
   static async getById(id: Types.ObjectId) {
     const user = await User.findById(id)
-    return user;
+    return user
   }
 
   static async getByIdentityDocument(identityDocument: string) {

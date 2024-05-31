@@ -1,8 +1,7 @@
-import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 import { Doctor, MedicalHistory, PrescriptionMedicine, AppUser } from '../models/interfaces/user.interface'
 import { auditSchema } from './audit';
 import { userTypes } from '../common/user-types';
-const { Schema } = mongoose
 
 const doctorSchema = new Schema<Doctor>({
   name: { type: String, required: true },
@@ -37,4 +36,4 @@ const userSchema = new Schema<AppUser>({
   audit: { type: auditSchema, required: true }
 })
 
-export const User = mongoose.model('User', userSchema)
+export const User = model('User', userSchema)

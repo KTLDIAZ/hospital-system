@@ -1,4 +1,4 @@
-import { Types } from 'mongoose'
+import { Audit } from './shared.interface';
 
 export interface AppUser  {
   fullName: string
@@ -11,15 +11,6 @@ export interface AppUser  {
   medicalHistory?: [MedicalHistory]
   specialties?: [string],
   audit: Audit
-}
-
-export interface Audit {
-  creatorId: Types.ObjectId
-  createdBy: string
-  createdAt: Date
-  updaterId: Types.ObjectId
-  updatedBy?: string
-  updatedAt?: Date
 }
 
 export interface Doctor {
