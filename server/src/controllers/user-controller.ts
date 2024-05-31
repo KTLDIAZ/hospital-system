@@ -14,6 +14,14 @@ export class UserContoller {
     return res.status(200).json({ ok: true, data: user, message: null })
   }
 
+  static async getAll(req: Request, res: Response) {
+    const users = await UserModel.getAll()
+    if (users.length === 0)
+      return res.status(204).json({ ok: false, data: null, message: 'There isn\'t any user' })
+    
+    return res.status(200).json({ ok: true, data: users, message: null })
+  }
+
   static async createPatient(req: Request, res: Response) {
     const exist = await UserModel.getByIdentityDocument(req.body.identityDocument)
 

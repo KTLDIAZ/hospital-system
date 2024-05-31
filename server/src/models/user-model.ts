@@ -15,6 +15,11 @@ export class UserModel {
     return user
   }
 
+  static async getAll() {
+    const users = await User.find().select({ medicalHistory: 0 }).exec()
+    return users
+  }
+
   private static async create(user: AppUser) {
     const newUser = await User.create({
       ...user,
