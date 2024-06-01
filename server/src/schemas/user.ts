@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
-import { Doctor, MedicalHistory, PrescriptionMedicine, AppUser } from '../models/interfaces/user.interface'
-import { auditSchema } from './audit';
-import { userTypes } from '../common/user-types';
+import { Doctor, MedicalHistory, PrescriptionMedicine, AppUser } from '../models/interfaces/user.interface.js'
+import { auditSchema } from './audit.js';
+import { userTypes } from '../common/user-types.js';
 
 const doctorSchema = new Schema<Doctor>({
   name: { type: String, required: true },

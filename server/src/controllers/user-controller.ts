@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { UserModel } from '../models/user-model';
-import { AppUser } from '../models/interfaces/user.interface';
-import mongoose, { ObjectId } from 'mongoose';
+import { UserModel } from '../models/user-model.js';
+import { AppUser } from '../models/interfaces/user.interface.js';
+import mongoose from 'mongoose';
 
 export class UserContoller {
 

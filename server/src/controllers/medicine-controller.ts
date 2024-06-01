@@ -1,7 +1,7 @@
 import { Request, Response } from 'express' 
-import { MedicineModel } from '../models/medicine-model'
+import { MedicineModel } from '../models/medicine-model.js'
 import { Types } from 'mongoose'
-import { AppMedicine, Inventory, InventoryTransaction } from '../models/interfaces/medicine,.interface'
+import { AppMedicine, Inventory, InventoryTransaction } from '../models/interfaces/medicine.interface.js'
 
 export class MedicineController {
 

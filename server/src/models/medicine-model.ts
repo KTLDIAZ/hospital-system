@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
-import { Medicine } from '../schemas/medicine';
-import { AppMedicine, Inventory, InventoryTransaction } from './interfaces/medicine,.interface'
+import { Medicine } from '../schemas/medicine.js';
+import { AppMedicine, Inventory, InventoryTransaction } from './interfaces/medicine.interface.js'
 
 export class MedicineModel {
 

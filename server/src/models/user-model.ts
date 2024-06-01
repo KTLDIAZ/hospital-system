@@ -1,7 +1,8 @@
-import { User } from '../schemas/user'
+import { User } from '../schemas/user.js'
 import { Types } from 'mongoose'
-import { AppUser } from './interfaces/user.interface'
-import { DOCTOR_TYPE, PATIENT_TYPE, STAFF_TYPE } from '../common/user-types'
+import { AppUser } from './interfaces/user.interface.js'
+import { DOCTOR_TYPE, PATIENT_TYPE, STAFF_TYPE } from '../common/user-types.js'
+import bcrypt from 'bcrypt';
 
 export class UserModel {
 

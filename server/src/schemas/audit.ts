@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose'
-import { Audit } from '../models/interfaces/shared.interface'
+import { Audit } from '../models/interfaces/shared.interface.js'
 
 export const auditSchema = new Schema<Audit>({
   creatorId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
