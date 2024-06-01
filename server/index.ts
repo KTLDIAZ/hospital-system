@@ -3,8 +3,11 @@ import cors from 'cors'
 import logger from 'morgan'
 import dotenv from 'dotenv'
 import UserRouter from './src/routes/user-routes.js'
+import dbConnection from './src/infrastructure/db-connection.js'
 
 dotenv.config()
+
+dbConnection()
 
 const app = express()
 
