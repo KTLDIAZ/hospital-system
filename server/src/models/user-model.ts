@@ -16,9 +16,33 @@ export class UserModel {
     return user
   }
 
+  static async getByEmail(email: string) {
+    const user = await User.findOne({ email })
+    return user
+  }
+
   static async getAll() {
     const users = await User.find().select({ medicalHistory: 0 }).exec()
     return users
+  }
+
+  static async getHashedPasswrod(password: string) {
+    const hashedPassword = await bcrypt.hash(password, 20)
+    return hashedPassword
+  }
+
+  static async changePassword(id: Types.ObjectId, oldPassword: string, newPassword: string) {
+    const user = await User.findById(id)
+    if (user ==  null) return false
+
+    const passwordMacth =  await bcrypt.compare(oldPassword, user.password!);
+    if (!passwordMacth) return false
+
+    user.password = await this.getHashedPasswrod(newPassword)
+
+    await user.save()
+
+    return true
   }
 
   private static async create(user: AppUser) {
@@ -36,11 +60,15 @@ export class UserModel {
 
   static async createStaff(staff: AppUser) {
     staff.type = STAFF_TYPE
+    staff.password = await this.getHashedPasswrod(staff.password!)
+
     return await this.create(staff)
   }
 
   static async createDoctor(doctor: AppUser) {
     doctor.type = DOCTOR_TYPE
+    doctor.password = await this.getHashedPasswrod(doctor.password!)
+
     return await this.create(doctor)
   }
 
