@@ -1,8 +1,9 @@
 import { User } from '../schemas/user.js'
 import { Types } from 'mongoose'
 import { AppUser } from './interfaces/user.interface.js'
-import { DOCTOR_TYPE, PATIENT_TYPE, STAFF_TYPE } from '../common/user-types.js'
+import { DOCTOR_TYPE, PATIENT_TYPE, STAFF_TYPE } from '../common/constants/user-types.js'
 import bcrypt from 'bcrypt';
+import { validateEmail } from '../common/validation/email.js';
 
 export class UserModel {
 
@@ -32,7 +33,7 @@ export class UserModel {
   }
 
   static async changePassword(id: Types.ObjectId, oldPassword: string, newPassword: string) {
-    const user = await User.findById(id)
+    const user = await this.getById(id)
     if (user ==  null) return false
 
     const passwordMacth =  await bcrypt.compare(oldPassword, user.password!);
@@ -73,7 +74,7 @@ export class UserModel {
   }
 
   static async setType(type: string, userId: Types.ObjectId) {
-    let user = await User.findById(userId)
+    let user = await this.getById(userId)
     if (user == null)
       return false
 
@@ -81,5 +82,18 @@ export class UserModel {
     await user.save()
 
     return true
+  }
+
+  static async IsInRole(id: Types.ObjectId, roles: string[]) {
+    const user = await User.findById(id, { roles: 1})
+
+    if (user == null) return false
+    
+    for (const role of roles) {
+      const foundRole = user.roles.find(x => x.name === role)
+      if (foundRole !== undefined) return true
+    }
+
+    return false
   }
 }

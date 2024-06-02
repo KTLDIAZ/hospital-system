@@ -9,14 +9,14 @@ const transactionsSchema = new Schema<InventoryTransaction>({
 
 const inventorySchema = new Schema<Inventory>({
   quantity: { type: Number, required: true },
-  sku: { type: String, required: true },
+  sku: { type: String, required: true, uppercase: true },
   expireAt: { type: Date, required: true },
   audit: { type: auditSchema, required: true },
 })
 
 const medicineSchema = new Schema<AppMedicine>({
-  name: { type: String, required: true },
-  brand: { type: String, required: true },
+  name: { type: String, required: true, uppercase: true },
+  brand: { type: String, required: true, uppercase: true },
   content: { type: String, required: true }, 
   description: { type: String, required: true },
   quantity: { type: Number, required: false, default: 0 },
@@ -24,4 +24,4 @@ const medicineSchema = new Schema<AppMedicine>({
   transactions: { type: [transactionsSchema], default: [] },
 })
 
-export const Medicine = model('Medicine', medicineSchema)
+export const Medicine = model('Medicines', medicineSchema)

@@ -1,8 +1,9 @@
-import jose from 'jose'
+import { EncryptJWT, base64url } from 'jose'
+import Enviroment from '../common/constants/enviroment'
 
 export const createToken = async (userId: string) => {
-  const secret = jose.base64url.decode(process.env.JWT_SECRET!)
-  const jwt = await new jose.EncryptJWT({ userId })
+  const secret = base64url.decode(Enviroment.secret)
+  const jwt = await new EncryptJWT({ userId })
     .setProtectedHeader({ alg: 'dir', enc: 'A128CBC-HS256' })
     .setIssuedAt()
     .setExpirationTime('2h')

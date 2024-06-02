@@ -1,3 +1,4 @@
+import { Role } from './role.interface';
 import { Audit } from './shared.interface';
 
 export interface AppUser  {
@@ -11,6 +12,8 @@ export interface AppUser  {
   medicalHistory?: [MedicalHistory]
   specialties?: [string],
   audit: Audit
+  isDisabled: boolean
+  roles: [Role]
 }
 
 export interface Doctor {

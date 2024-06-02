@@ -1,7 +1,8 @@
 import { Schema, model } from 'mongoose'
 import { Doctor, MedicalHistory, PrescriptionMedicine, AppUser } from '../models/interfaces/user.interface.js'
 import { auditSchema } from './audit.js';
-import { userTypes } from '../common/user-types.js';
+import { USER_TYPES } from '../common/constants/user-types.js';
+import { roleSchema } from './role.js';
 
 const doctorSchema = new Schema<Doctor>({
   name: { type: String, required: true },
@@ -22,18 +23,19 @@ const medicalHistorySchema = new Schema<MedicalHistory>({
 })
 
 const userSchema = new Schema<AppUser>({
-  fullName: { type: String, required: true },
-  identityDocument: { type: String, required: true, unique: true },
-  email: { type: String, required: false, unique: true },
+  fullName: { type: String, required: true, uppercase: true },
+  identityDocument: { type: String, required: true, unique: true, index: true },
+  email: { type: String, required: false, unique: true,  lowercase: true },
   password: { type: String, required: false },
   birthDate: { type: Date, required: true },
   bloodType: { type: String, required: true },
   medicalHistory: [medicalHistorySchema],
-
-  type: { type: String, enum: userTypes },
+  isDisabled: { type: Boolean, required: true },
+  roles: { type: [roleSchema], required: true },
+  type: { type: String, enum: USER_TYPES, index: true },
   // doctor
   specialties: [{ type: String, required: false }],
   audit: { type: auditSchema, required: true }
 })
 
-export const User = model('User', userSchema)
+export const User = model('Users', userSchema)
