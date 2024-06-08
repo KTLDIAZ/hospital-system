@@ -28,7 +28,7 @@ export class UserModel {
   }
 
   static async getHashedPasswrod(password: string) {
-    const hashedPassword = await bcrypt.hash(password, 20)
+    const hashedPassword = await bcrypt.hash(password, 10)
     return hashedPassword
   }
 

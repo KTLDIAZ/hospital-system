@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { JWTPayload, jwtDecrypt, jwtVerify } from 'jose';
+import { JWTPayload, jwtDecrypt } from 'jose';
 import Enviroment from '../common/constants/enviroment.js'
 import { base64url } from 'jose'
 import { UserModel } from '../models/user-model.js'

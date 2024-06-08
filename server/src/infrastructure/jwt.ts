@@ -1,5 +1,5 @@
 import { EncryptJWT, base64url } from 'jose'
-import Enviroment from '../common/constants/enviroment'
+import Enviroment from '../common/constants/enviroment.js'
 
 export const createToken = async (userId: string) => {
   const secret = base64url.decode(Enviroment.secret)
