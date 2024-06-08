@@ -1,8 +1,16 @@
-import { Button } from "flowbite-react";
+import {  Flowbite } from 'flowbite-react'
+import AppRouter from './routes/AppRouter'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 const App = () => {
   return (
-    <Button>Click me</Button>
+    <Flowbite theme={{ mode: 'auto' }}>
+      <QueryClientProvider client={queryClient}>
+        <AppRouter />
+      </QueryClientProvider> 
+    </Flowbite>
   )
 }
 
