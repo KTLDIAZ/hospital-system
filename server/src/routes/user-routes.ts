@@ -10,6 +10,7 @@ router.use(verifySession)
 
 router.get('/', isInRole([ROLES.ADMIN, ROLES.DOCTOR]), UserContoller.getAll)
 router.get('/:id', isInRole([ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECPTIONIST]), UserContoller.getById)
+router.get('/identity/:identity', isInRole([ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECPTIONIST]), UserContoller.getByIdentityDocument)
 router.post('/staff', isInRole([ROLES.ADMIN]), UserContoller.createStaff)
 router.post('/doctor', isInRole([ROLES.ADMIN]), UserContoller.createDoctor)
 router.post('/patient', isInRole([ROLES.ADMIN, ROLES.RECPTIONIST, ROLES.DOCTOR]), UserContoller.createPatient)

@@ -4,14 +4,14 @@ import Enviroment from '../common/constants/enviroment.js'
 
 export const verifySession = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.token
-
-  const notFoundResponse = res.status(404).json({ ok: false, data: null, mesasge: 'Not found' })
-  if (!token) return notFoundResponse;
+  
+  if (!token) return res.status(404).json({ ok: false, data: null, mesasge: 'Not found' });
 
   try {
-    await jwtVerify(token, new TextEncoder().encode(Enviroment.secret));
+    const secret = new TextEncoder().encode(Enviroment.secret)
+    await jwtVerify(token, secret);
     return next();
   } catch (error) {
-    return notFoundResponse;
+    return res.status(404).json({ ok: false, data: null, mesasge: 'Not found' });
   }
 }  

@@ -7,9 +7,17 @@ export class UserContoller {
 
   static async getById(req: Request, res: Response) {
     const userId = new mongoose.Types.ObjectId(req.params.id as string)
-    const user = UserModel.getById(userId);
+    const user = await UserModel.getById(userId);
     if(user == null)
-      return res.json({ ok: false, data: null, message: 'User not found'})
+      return res.status(404).json({ ok: false, data: null, message: 'User not found'})
+
+    return res.status(200).json({ ok: true, data: user, message: null })
+  }
+
+  static async getByIdentityDocument(req: Request, res: Response) {
+    const user = await UserModel.getByIdentityDocument(req.params.identity);
+    if(user == null)
+      return res.status(404).json({ ok: false, data: null, message: 'User not found'})
 
     return res.status(200).json({ ok: true, data: user, message: null })
   }

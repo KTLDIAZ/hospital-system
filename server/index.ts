@@ -6,6 +6,7 @@ import UserRouter from './src/routes/user-routes.js'
 import MedicineRouter from './src/routes/medicine-routes.js'
 import AuthRouter from './src/routes/auth-routes.js'
 import dbConnection from './src/infrastructure/db-connection.js'
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
@@ -20,6 +21,7 @@ app.use(cors({
   credentials: true
 }))
 
+app.use(cookieParser())
 app.use(express.json())
 app.use(logger('dev'))
 
