@@ -47,7 +47,7 @@ const Login = () => {
       <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         Hospital system
       </h1>
-      <form onSubmit={onSubmit} className="flex max-w-md md:min-w-80 flex-col gap-4">
+      <form onSubmit={onSubmit} className="flex px-5 min-w-80 md:w-96 flex-col gap-4">
         <InputGroup
           autoFocus
           autoComplete="email"
