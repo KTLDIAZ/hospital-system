@@ -5,6 +5,8 @@ import * as z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import AuthService from "~/common/services/AuthService"
+import { useLocation } from "react-router-dom"
+import useAuth from "~/common/hooks/useAuth"
 
 const schema = z.object({
   email: z.string().email(),
@@ -14,6 +16,10 @@ const schema = z.object({
 type Login = z.infer<typeof schema>;
 
 const Login = () => {
+  const login = useAuth(s => s.login)
+  const location = useLocation();
+  const { search } = location;
+
   const {
     register,
     handleSubmit,
@@ -27,8 +33,8 @@ const Login = () => {
     mutationFn: (data: Login) => {
       return AuthService.Login(data.email, data.password)
     },
-    onSuccess: (x) => {
-      console.log(x)
+    onSuccess: (succeed) => {
+      if (succeed) login(search) 
     }
   })
 

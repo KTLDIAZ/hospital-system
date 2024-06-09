@@ -1,8 +1,8 @@
 
-const MedicinePage = () => {
+const MedicinesPage = () => {
   return (
     <div>Medicine page</div>
   )
 }
 
-export default MedicinePage
+export default MedicinesPage

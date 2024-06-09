@@ -9,10 +9,10 @@ export class AuthController {
 
     const isProduction = process.env.NODE_ENV === 'production'
     const cookieOptions: CookieOptions = {
-      httpOnly: true,
+      httpOnly: false,
       maxAge: 1000 + 60 * 60 * 24 * 30,
       path: '/', 
-      sameSite: isProduction ? 'strict' : 'lax', 
+      sameSite: 'strict', 
       secure: isProduction
     }
 
