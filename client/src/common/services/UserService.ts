@@ -3,7 +3,7 @@ import { ApiResponse } from '../types/api.interface';
 import AxiosInstance from "./AxiosInstance"
 
 export default class UserService {
-  static async Search(identity: string) {
+  static async GetByIdentity(identity: string) {
     try {
       const response = await AxiosInstance.get<ApiResponse<string>>(`/user/identity/${identity}`, 
         { withCredentials: true })

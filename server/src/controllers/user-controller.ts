@@ -15,6 +15,9 @@ export class UserContoller {
   }
 
   static async getByIdentityDocument(req: Request, res: Response) {
+    if (!req.params.identity)
+      return res.status(404).json({ ok: false, data: null, message: 'User not found'})
+
     const user = await UserModel.getByIdentityDocument(req.params.identity);
     if(user == null)
       return res.status(404).json({ ok: false, data: null, message: 'User not found'})

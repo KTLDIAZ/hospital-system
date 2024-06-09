@@ -13,7 +13,9 @@ export class UserModel {
   }
 
   static async getByIdentityDocument(identityDocument: string) {
-    const user = await User.findOne({ identityDocument }).select({ password: 0, roles: 0, audit: 0})
+    const user = await User.findOne({ identityDocument })
+      .select({ password: 0, roles: 0, audit: 0, medicalHistory: 0})
+      
     return user
   }
 
