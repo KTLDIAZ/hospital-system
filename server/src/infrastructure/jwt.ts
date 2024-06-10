@@ -1,4 +1,4 @@
-import { SignJWT } from 'jose'
+import { SignJWT, jwtVerify } from 'jose'
 import Enviroment from '../common/constants/enviroment.js'
 
 export const createToken = async (userId: string) => {
@@ -11,4 +11,14 @@ export const createToken = async (userId: string) => {
     .sign(secret)
 
   return jwt
+}
+
+export const getPayload = async (token: string) => {
+  if (!token) return null
+  
+  const secret = new TextEncoder().encode(Enviroment.secret)
+
+  const { payload } = await jwtVerify(token, secret)
+
+  return payload
 }

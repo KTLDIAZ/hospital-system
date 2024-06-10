@@ -12,4 +12,26 @@ export default class AuthService {
       return false
     }
   }
+
+  static async GetRoles() {
+    try {
+      const response = await AxiosInstance
+        .get<ApiResponse<object>>('/auth/roles', { withCredentials: true })
+      return response.data
+    } catch(ex) {
+      const errorResponse: ApiResponse<object> = { ok: false, message: 'an error has ocurred', data: null }
+      return errorResponse
+    }
+  }
+
+  static async GetUserTypes() {
+    try {
+      const response = await AxiosInstance
+        .get<ApiResponse<string[]>>('/auth/user-types', { withCredentials: true })
+      return response.data
+    } catch(ex) {
+      const errorResponse: ApiResponse<string[]> = { ok: false, message: 'an error has ocurred', data: null }
+      return errorResponse
+    }
+  }
 }

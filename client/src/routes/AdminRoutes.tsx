@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom"
 import UsersPage from '~/modules/user/Index'
-import CreateUser from '~/modules/user/CreateUser'
-import UpdateUser from '~/modules/user/UpdateUser'
-import SingleUser from '~/modules/user/SingleUser'
+import CreateUserPage from '~/modules/user/CreateUserPage'
+import UpdateUserPage from '~/modules/user/UpdateUserPage'
+import SingleUserPage from '~/modules/user/SingleUserPage'
 import PrivateRoute from "./PrivateRoute"
 
 const AdminRoutes = () => {
@@ -13,13 +13,13 @@ const AdminRoutes = () => {
           <Route index element={<UsersPage />} />
         </Route>
         <Route path="create" element={<PrivateRoute />}>
-          <Route index element={<CreateUser />} />
+          <Route index element={<CreateUserPage />} />
         </Route>
         <Route path="update" element={<PrivateRoute />}>
-          <Route index element={<UpdateUser />} />
+          <Route index element={<UpdateUserPage />} />
         </Route>
         <Route path=":id" element={<PrivateRoute />}>
-          <Route index element={<SingleUser />} />
+          <Route index element={<SingleUserPage />} />
         </Route>
       </Route>
     </Routes>

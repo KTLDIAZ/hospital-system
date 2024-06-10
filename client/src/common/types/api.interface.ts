@@ -1,5 +1,5 @@
 export interface ApiResponse<T> {
   ok: boolean
-  data: T
+  data: T | null
   message: string
 }

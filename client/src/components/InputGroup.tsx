@@ -6,7 +6,7 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
     return (
       <div>
         <div className="mb-2 block">
-          <Label htmlFor={id} value={label} />
+          <Label htmlFor={id} value={label + ':'} />
         </div>
         <TextInput id={id} {...rest} ref={ref} type={type} />
         {errorMessage && <p className='text-black dark:text-white'>{errorMessage}</p>}

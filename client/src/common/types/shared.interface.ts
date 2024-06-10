@@ -1,10 +1,8 @@
-import { Types } from "mongoose"
-
 export interface Audit {
-  creatorId: Types.ObjectId
+  creatorId: string
   createdBy: string
   createdAt: Date
-  updaterId?: Types.ObjectId
+  updaterId: string
   updatedBy?: string
   updatedAt?: Date
 }

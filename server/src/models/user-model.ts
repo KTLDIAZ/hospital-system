@@ -1,9 +1,8 @@
 import { User } from '../schemas/user.js'
 import { Types } from 'mongoose'
 import { AppUser } from './interfaces/user.interface.js'
-import { DOCTOR_TYPE, PATIENT_TYPE, STAFF_TYPE } from '../common/constants/user-types.js'
-import bcrypt from 'bcrypt';
-import { validateEmail } from '../common/validation/email.js';
+import bcrypt from 'bcrypt'
+import { PATIENT_TYPE } from '../common/constants/user-types.js'
 
 export class UserModel {
 
@@ -48,31 +47,16 @@ export class UserModel {
     return true
   }
 
-  private static async create(user: AppUser) {
+  static async create(user: AppUser) {
+    if (user.type !== PATIENT_TYPE) {
+      user.password = await this.getHashedPasswrod(user.password!)
+    }
+
     const newUser = await User.create({
       ...user,
     })
 
     return newUser
-  }
-
-  static async createPatient(patient: AppUser) {
-    patient.type = PATIENT_TYPE
-    return await this.create(patient)
-  }
-
-  static async createStaff(staff: AppUser) {
-    staff.type = STAFF_TYPE
-    staff.password = await this.getHashedPasswrod(staff.password!)
-
-    return await this.create(staff)
-  }
-
-  static async createDoctor(doctor: AppUser) {
-    doctor.type = DOCTOR_TYPE
-    doctor.password = await this.getHashedPasswrod(doctor.password!)
-
-    return await this.create(doctor)
   }
 
   static async setType(type: string, userId: Types.ObjectId) {

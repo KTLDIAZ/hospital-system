@@ -15,4 +15,15 @@ AxiosInstance.interceptors.response.use(response => {
  return error;
 });
 
+AxiosInstance.interceptors.request.use(
+  function(config) {
+    config.withCredentials = true;
+    return config;
+  },
+  function(error) {
+    console.log(error)
+    return Promise.reject(error);
+  }
+);
+
 export default AxiosInstance

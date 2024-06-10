@@ -1,5 +1,7 @@
 import { CookieOptions, Request, Response } from 'express'
 import { AuthService } from '../infrastructure/auth-service.js'
+import { ROLES } from '../common/constants/role.js'
+import { USER_TYPES } from '../common/constants/user-types.js'
 export class AuthController {
 
   static async login(req: Request, res: Response) {
@@ -18,5 +20,13 @@ export class AuthController {
 
     res.cookie('token', jwt, cookieOptions)
     return res.status(200).json({ ok: true, data: null, message: null})
+  }
+
+  static async getRoles(req: Request, res: Response) {
+    return res.status(200).json({ ok: true, data: ROLES, message: null})
+  }
+
+  static async getUserTypes(req: Request, res: Response) {
+    return res.status(200).json({ ok: true, data: USER_TYPES, message: null})
   }
 }

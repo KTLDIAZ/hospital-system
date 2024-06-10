@@ -13,7 +13,7 @@ export interface AppUser  {
   specialties?: [string],
   audit: Audit
   isDisabled: boolean
-  roles: [Role]
+  roles: Role[]
 }
 
 export interface Doctor {
