@@ -1,9 +1,9 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes } from 'react-router-dom'
 import UsersPage from '~/modules/user/Index'
 import CreateUserPage from '~/modules/user/CreateUserPage'
 import UpdateUserPage from '~/modules/user/UpdateUserPage'
 import SingleUserPage from '~/modules/user/SingleUserPage'
-import PrivateRoute from "./PrivateRoute"
+import PrivateRoute from './PrivateRoute'
 
 const AdminRoutes = () => {
   return (

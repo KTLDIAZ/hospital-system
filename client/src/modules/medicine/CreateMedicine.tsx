@@ -1,8 +1,5 @@
-
 const CreateMedicine = () => {
-  return (
-    <div>CreateMedicine</div>
-  )
+  return <div>CreateMedicine</div>
 }
 
 export default CreateMedicine

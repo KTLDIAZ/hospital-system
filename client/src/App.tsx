@@ -1,4 +1,4 @@
-import {  Flowbite } from 'flowbite-react'
+import { Flowbite } from 'flowbite-react'
 import AppRouter from './routes/AppRouter'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AuthProvider } from './common/context/AuthContext'
@@ -15,7 +15,7 @@ const App = () => {
         <AuthProvider isAuthenticated={token != null}>
           <AppRouter />
         </AuthProvider>
-      </QueryClientProvider> 
+      </QueryClientProvider>
     </Flowbite>
   )
 }

@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query"
-import { Dropdown, Table } from "flowbite-react"
-import { Link } from "react-router-dom"
-import UserService from "~/common/services/UserService"
+import { useQuery } from '@tanstack/react-query'
+import { Dropdown, Table } from 'flowbite-react'
+import { Link } from 'react-router-dom'
+import UserService from '~/common/services/UserService'
 
 const UsersPage = () => {
-  const {data, isFetched } = useQuery({
+  const { data, isFetched } = useQuery({
     queryKey: ['users'],
-    queryFn: async () => await UserService.GetAll() 
+    queryFn: async () => await UserService.GetAll()
   })
 
   return (
@@ -28,9 +28,10 @@ const UsersPage = () => {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {
-            isFetched && data?.ok && data.data != null &&
-            data.data.map(x => 
+          {isFetched &&
+            data?.ok &&
+            data.data != null &&
+            data.data.map(x => (
               <Table.Row key={x._id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                 <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {x.fullName}
@@ -63,15 +64,18 @@ const UsersPage = () => {
                   {x.audit.updatedAt?.toString()}
                 </Table.Cell>
                 <Table.Cell>
-                <Dropdown label="Actions" dismissOnClick={true}>
-                  <Dropdown.Item as={Link} to={`/admin/user/update/${x._id}`} className="font-medium text-cyan-600 dark:text-cyan-500">
-                    Edit
-                  </Dropdown.Item>
-                </Dropdown>
+                  <Dropdown label="Actions" dismissOnClick={true}>
+                    <Dropdown.Item
+                      as={Link}
+                      to={`/admin/user/update/${x._id}`}
+                      className="font-medium text-cyan-600 dark:text-cyan-500"
+                    >
+                      Edit
+                    </Dropdown.Item>
+                  </Dropdown>
                 </Table.Cell>
               </Table.Row>
-            )
-          }
+            ))}
         </Table.Body>
       </Table>
     </div>

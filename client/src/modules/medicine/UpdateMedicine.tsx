@@ -1,8 +1,5 @@
-
 const UpdateMedicine = () => {
-  return (
-    <div>UpdateMedicine</div>
-  )
+  return <div>UpdateMedicine</div>
 }
 
 export default UpdateMedicine

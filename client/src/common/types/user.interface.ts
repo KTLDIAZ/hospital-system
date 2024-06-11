@@ -1,7 +1,7 @@
-import { Role } from "./role.interface"
-import { Audit } from "./shared.interface"
+import { Role } from './role.interface'
+import { Audit } from './shared.interface'
 
-export interface AppUser  {
+export interface AppUser {
   _id: string
   fullName: string
   identityDocument: string
@@ -11,7 +11,7 @@ export interface AppUser  {
   password: string
   type: string
   medicalHistory?: [MedicalHistory]
-  specialties?: string[],
+  specialties?: string[]
   audit: Audit
   isDisabled: boolean
   roles: [Role]
@@ -48,7 +48,7 @@ interface RoleForCreateUser {
 }
 
 export interface CreateUser extends Omit<AppUser, keyof RemoveForCreateUser> {
-  roles: RoleForCreateUser  []
+  roles: RoleForCreateUser[]
 }
 
 export interface UserByIdentity {

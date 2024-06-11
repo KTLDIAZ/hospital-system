@@ -20,10 +20,10 @@ const AppRouter = ({ children }: React.PropsWithChildren) => {
         </Route>
         <Route path="auth/*" element={<PublicRoute />}>
           <Route path="login" element={<Login />} />
-          <Route path='*' element={<Navigate to='/auth/login' />} />
+          <Route path="*" element={<Navigate to="/auth/login" />} />
         </Route>
-        <Route path='medicine/*' element={<MedicineRoutes />} />
-        <Route path='admin/*' element={<AdminRoutes />} />
+        <Route path="medicine/*" element={<MedicineRoutes />} />
+        <Route path="admin/*" element={<AdminRoutes />} />
       </Routes>
     </BrowserRouter>
   )

@@ -1,8 +1,5 @@
-
 const SingleMedicine = () => {
-  return (
-    <div>SingleMedicine</div>
-  )
+  return <div>SingleMedicine</div>
 }
 
 export default SingleMedicine

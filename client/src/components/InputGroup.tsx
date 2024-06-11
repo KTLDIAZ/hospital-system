@@ -9,16 +9,16 @@ const InputGroup = forwardRef<HTMLInputElement, InputGroupProps>(
           <Label htmlFor={id} value={label + ':'} />
         </div>
         <TextInput id={id} {...rest} ref={ref} type={type} />
-        {errorMessage && <p className='text-black dark:text-white'>{errorMessage}</p>}
+        {errorMessage && <p className="text-black dark:text-white">{errorMessage}</p>}
       </div>
     )
   }
 )
 
 interface InputGroupProps extends InputHTMLAttributes<HTMLInputElement> {
-  id?: string;
-  label: string;
-  errorMessage?: string;
+  id?: string
+  label: string
+  errorMessage?: string
 }
 
 InputGroup.displayName = 'InputGroup'

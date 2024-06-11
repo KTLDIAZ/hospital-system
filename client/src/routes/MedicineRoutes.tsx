@@ -1,10 +1,10 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes } from 'react-router-dom'
 import MedicinesPage from '~/modules/medicine/Index'
 import CreateMedicine from '~/modules/medicine/CreateMedicine'
 import UpdateMedicine from '~/modules/medicine/UpdateMedicine'
 import CreateTransaction from '~/modules/medicine/CreateTransaction'
 import SingleMedicine from '~/modules/medicine/SingleMedicine'
-import PrivateRoute from "./PrivateRoute"
+import PrivateRoute from './PrivateRoute'
 
 const MedicineRoutes = () => {
   return (

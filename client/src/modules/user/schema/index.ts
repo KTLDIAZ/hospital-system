@@ -1,7 +1,6 @@
-import { toZod } from "tozod";
-import { z } from "zod";
-import { CreateUser } from "~/common/types/user.interface";
-
+import { toZod } from 'tozod'
+import { z } from 'zod'
+import { CreateUser } from '~/common/types/user.interface'
 
 export const userSchema: toZod<CreateUser> = z.object({
   birthDate: z.date(),

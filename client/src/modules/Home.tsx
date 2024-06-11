@@ -1,17 +1,17 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
-import { Card } from "flowbite-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import UserService from "~/common/services/UserService";
-import { ApiResponse } from "~/common/types/api.interface";
-import { UserByIdentity } from "~/common/types/user.interface";
-import InputGroup from "~/components/InputGroup";
-import P from "~/components/P";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useQuery } from '@tanstack/react-query'
+import { Card } from 'flowbite-react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import UserService from '~/common/services/UserService'
+import { ApiResponse } from '~/common/types/api.interface'
+import { UserByIdentity } from '~/common/types/user.interface'
+import InputGroup from '~/components/InputGroup'
+import P from '~/components/P'
 
- const schema = z.object({
+const schema = z.object({
   identity: z.string()
-});
+})
 
 type Idenitty = z.infer<typeof schema>
 
@@ -25,20 +25,20 @@ const Home = () => {
   } = useForm<Idenitty>({
     shouldFocusError: true,
     resolver: zodResolver(schema)
-  });
+  })
 
   const { data, isFetched, refetch } = useQuery<ApiResponse<UserByIdentity>>({
     queryKey: ['GetByIdentity'],
     queryFn: () => UserService.GetByIdentity(getValues('identity')),
-    enabled: false,
+    enabled: false
   })
 
-  const onSubmit = handleSubmit( async (data) => {
-    if (data.identity === "") return
-    
+  const onSubmit = handleSubmit(async data => {
+    if (data.identity === '') return
+
     const response = await refetch()
     if (response.data && !response.data.ok) {
-      setError("identity", { message: response.data.message})
+      setError('identity', { message: response.data.message })
     }
   })
 
@@ -54,15 +54,21 @@ const Home = () => {
           {...register('identity')}
         />
       </form>
-      {
-        isFetched && data?.ok &&
-          <UserByIdentityCard {...data.data} />
-      }
+      {isFetched && data?.ok && data.data !== null && <UserByIdentityCard {...data.data} />}
     </div>
   )
 }
 
-const UserByIdentityCard = ({ birthDate, bloodType,email,fullName,identityDocument,specialties,type, isDisabled } : UserByIdentity) => {
+const UserByIdentityCard = ({
+  birthDate,
+  bloodType,
+  email,
+  fullName,
+  identityDocument,
+  specialties,
+  type,
+  isDisabled
+}: UserByIdentity) => {
   return (
     <Card className="w-full">
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

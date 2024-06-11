@@ -8,7 +8,7 @@ import * as z from 'zod'
 import AuthService from '~/common/services/AuthService'
 import UserService from '~/common/services/UserService'
 import { ApiResponse } from '~/common/types/api.interface'
-import { CreateUser } from "~/common/types/user.interface"
+import { CreateUser } from '~/common/types/user.interface'
 import InputGroup from '~/components/InputGroup'
 
 const schema: toZod<CreateUser> = z.object({
@@ -33,7 +33,7 @@ const CreateUserPage = () => {
   } = useForm<CreateUser>({
     shouldFocusError: true,
     resolver: zodResolver(schema)
-  });
+  })
 
   const { data, isFetched } = useQuery<ApiResponse<object>>({
     queryKey: ['roles'],
@@ -45,13 +45,13 @@ const CreateUserPage = () => {
     queryFn: async () => await AuthService.GetUserTypes()
   })
 
-  const mutation =  useMutation({
+  const mutation = useMutation({
     mutationFn: (data: CreateUser) => {
       return UserService.CreateUser(data)
     },
-    onSuccess: (response) => {
+    onSuccess: response => {
       if (response.ok) {
-        navigate({pathname: '/admin/user'})
+        navigate({ pathname: '/admin/user' })
       } else {
         alert(response.message)
       }
@@ -60,21 +60,20 @@ const CreateUserPage = () => {
 
   const onSubmit = handleSubmit(data => {
     mutation.mutate(data)
-  }) 
+  })
 
-  const onChangeRole: React.ChangeEventHandler<HTMLSelectElement>  = (e) => {
-    const roles = Array.from(e.target.selectedOptions, 
-        option => ({ name: option.value}))
+  const onChangeRole: React.ChangeEventHandler<HTMLSelectElement> = e => {
+    const roles = Array.from(e.target.selectedOptions, option => ({ name: option.value }))
 
     setValue('roles', roles)
   }
 
-  const onChangeBirthDate: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onChangeBirthDate: React.ChangeEventHandler<HTMLInputElement> = e => {
     const date = new Date(e.target.value)
     setValue('birthDate', date)
   }
 
-  const onChangeSpecialties: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onChangeSpecialties: React.ChangeEventHandler<HTMLInputElement> = e => {
     const specialties = e.target.value.split(',')
     setValue('specialties', specialties)
   }
@@ -86,48 +85,50 @@ const CreateUserPage = () => {
           <div className="mb-2 block">
             <Label htmlFor="userTypes" value="Select the roles" />
           </div>
-          <Select id="userTypes"  required {...register('type')} >
-            {userTypesFetched && userTypes?.ok && 
-              userTypes.data!.map(
-                x => <option value={x} key={x} >{x}</option>
-              )
-            }
+          <Select id="userTypes" required {...register('type')}>
+            {userTypesFetched &&
+              userTypes?.ok &&
+              userTypes.data!.map(x => (
+                <option value={x} key={x}>
+                  {x}
+                </option>
+              ))}
           </Select>
         </div>
-        <InputGroup 
-          label='Fullname'
-          id='fullName'
+        <InputGroup
+          label="Fullname"
+          id="fullName"
           errorMessage={errors.fullName?.message}
           {...register('fullName')}
         />
-        <InputGroup 
-          label='Identity document'
-          id='identity'
+        <InputGroup
+          label="Identity document"
+          id="identity"
           errorMessage={errors.identityDocument?.message}
           {...register('identityDocument')}
         />
-        <InputGroup 
-          label='Email'
-          id='email'
+        <InputGroup
+          label="Email"
+          id="email"
           errorMessage={errors.email?.message}
           {...register('email')}
         />
-        <InputGroup 
-          label='Birth date'
-          id='birthDate'
-          type='date'
+        <InputGroup
+          label="Birth date"
+          id="birthDate"
+          type="date"
           onChange={onChangeBirthDate}
           errorMessage={errors.birthDate?.message}
         />
-        <InputGroup 
-          label='Blood type'
-          id='bloodType'
+        <InputGroup
+          label="Blood type"
+          id="bloodType"
           errorMessage={errors.bloodType?.message}
           {...register('bloodType')}
         />
-        <InputGroup 
-          label='Specialties'
-          id='specialties'
+        <InputGroup
+          label="Specialties"
+          id="specialties"
           onChange={onChangeSpecialties}
           errorMessage={errors.specialties?.message}
         />
@@ -136,18 +137,20 @@ const CreateUserPage = () => {
             <Label htmlFor="roles" value="Select the roles" />
           </div>
           <Select id="roles" multiple required onChange={onChangeRole}>
-            {isFetched && data?.ok && 
-              Object.values(data.data as object).map(
-                x => <option value={x} key={x} >{x}</option>
-              )
-            }
+            {isFetched &&
+              data?.ok &&
+              Object.values(data.data as object).map(x => (
+                <option value={x} key={x}>
+                  {x}
+                </option>
+              ))}
           </Select>
         </div>
-        <InputGroup 
-          autoComplete='new-password'
-          label='Passwrod'
-          id='password'
-          type='password'
+        <InputGroup
+          autoComplete="new-password"
+          label="Passwrod"
+          id="password"
+          type="password"
           errorMessage={errors.password?.message}
           {...register('password')}
         />

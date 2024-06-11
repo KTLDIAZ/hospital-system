@@ -1,6 +1,6 @@
-import { Audit } from "./shared.interface"
+import { Audit } from './shared.interface'
 
 export interface Role {
-  name: string 
+  name: string
   audit: Audit
 }

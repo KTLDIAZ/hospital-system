@@ -1,9 +1,8 @@
-
-const P = ({ text, value}: Props) => {
+const P = ({ text, value }: Props) => {
   return (
     <p className="font-normal text-gray-700 dark:text-gray-400">
-        {text}: {value}
-      </p>
+      {text}: {value}
+    </p>
   )
 }
 

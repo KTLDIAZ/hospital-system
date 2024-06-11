@@ -16,15 +16,15 @@ export interface AuthState extends AuthProps {
 export type AuthStore = ReturnType<typeof createAuthStore>
 
 const createAuthStore = (initProps: AuthProps) => {
-  return createStore<AuthState>((set) => ({
+  return createStore<AuthState>(set => ({
     ...initProps,
     login: (path = '/') => {
-      set({ isAuthenticated: true})
-      Navigate({ to: path, })
+      set({ isAuthenticated: true })
+      Navigate({ to: path })
     },
     logout: () => {
       Cookies.remove('token')
-      set({ isAuthenticated: false})
+      set({ isAuthenticated: false })
     }
   }))
 }
@@ -33,15 +33,10 @@ export const AuthContext = createContext<AuthStore | null>(null)
 
 type AuthProviderProps = React.PropsWithChildren<AuthProps>
 
-
 export const AuthProvider = ({ children, ...props }: AuthProviderProps) => {
   const storeRef = useRef<AuthStore>()
   if (!storeRef.current) {
     storeRef.current = createAuthStore(props)
   }
-  return (
-    <AuthContext.Provider value={storeRef.current}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={storeRef.current}>{children}</AuthContext.Provider>
 }

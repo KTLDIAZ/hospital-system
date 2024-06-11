@@ -1,6 +1,6 @@
-import { useContext } from "react"
-import { AuthContext, AuthState } from "../context/AuthContext"
-import { useStore } from "zustand"
+import { useContext } from 'react'
+import { AuthContext, AuthState } from '../context/AuthContext'
+import { useStore } from 'zustand'
 
 function useAuth<T>(selector: (state: AuthState) => T): T {
   const store = useContext(AuthContext)

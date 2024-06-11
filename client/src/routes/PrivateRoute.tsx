@@ -7,12 +7,14 @@ const PrivateRoute = ({ isAllowed = true, redirectTo = '/' }: Props) => {
   const location = useLocation()
 
   if (!isAllowed) {
-    return <Navigate to={redirectTo} replace /> 
-    }
-  
-  return isAuthenticated ? 
-    <Layout children={<Outlet />} /> : 
-    <Navigate to="/auth/login" state={{ from: location }}   />
+    return <Navigate to={redirectTo} replace />
+  }
+
+  return isAuthenticated ? (
+    <Layout children={<Outlet />} />
+  ) : (
+    <Navigate to="/auth/login" state={{ from: location }} />
+  )
 }
 
 interface Props {
