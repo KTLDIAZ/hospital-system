@@ -9,7 +9,6 @@ interface AuthProps {
 
 export interface AuthState extends AuthProps {
   isAuthenticated: boolean
-  init: () => void
   login: (path: string) => void
   logout: () => void
 }
@@ -19,11 +18,6 @@ export type AuthStore = ReturnType<typeof createAuthStore>
 const createAuthStore = (initProps: AuthProps) => {
   return createStore<AuthState>((set) => ({
     ...initProps,
-    init: () => {
-      const token = Cookies.get('token')
-      console.log(token)
-      set({ isAuthenticated: token != null })
-    },
     login: (path = '/') => {
       set({ isAuthenticated: true})
       Navigate({ to: path, })

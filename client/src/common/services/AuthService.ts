@@ -4,10 +4,10 @@ import AxiosInstance from "./AxiosInstance"
 export default class AuthService {
   static async Login(email: string, password: string) {
     try {
-      await AxiosInstance.post<ApiResponse<string>>('/auth/login', 
+      const response = await AxiosInstance.post<ApiResponse<string>>('/auth/login', 
         { email, password }, 
         { withCredentials: true })
-      return true
+      return response.data.ok
     } catch(ex) {
       return false
     }

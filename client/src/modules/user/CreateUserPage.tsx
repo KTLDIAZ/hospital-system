@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Label, Select } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { toZod } from 'tozod'
 import * as z from 'zod'
 import AuthService from '~/common/services/AuthService'
@@ -23,6 +24,7 @@ const schema: toZod<CreateUser> = z.object({
 })
 
 const CreateUserPage = () => {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -48,7 +50,11 @@ const CreateUserPage = () => {
       return UserService.CreateUser(data)
     },
     onSuccess: (response) => {
-      console.log(response)
+      if (response.ok) {
+        navigate({pathname: '/admin/user'})
+      } else {
+        alert(response.message)
+      }
     }
   })
 

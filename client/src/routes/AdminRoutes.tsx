@@ -15,7 +15,7 @@ const AdminRoutes = () => {
         <Route path="create" element={<PrivateRoute />}>
           <Route index element={<CreateUserPage />} />
         </Route>
-        <Route path="update" element={<PrivateRoute />}>
+        <Route path="update/:id" element={<PrivateRoute />}>
           <Route index element={<UpdateUserPage />} />
         </Route>
         <Route path=":id" element={<PrivateRoute />}>

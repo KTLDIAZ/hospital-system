@@ -2,6 +2,7 @@ import { Role } from "./role.interface"
 import { Audit } from "./shared.interface"
 
 export interface AppUser  {
+  _id: string
   fullName: string
   identityDocument: string
   email: string
@@ -35,6 +36,7 @@ export interface MedicalHistory {
 }
 
 interface RemoveForCreateUser {
+  _id: string
   audit: Audit
   medicalHistory: [MedicalHistory]
   isDisabled: boolean

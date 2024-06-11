@@ -1,6 +1,14 @@
-import { Table } from "flowbite-react"
+import { useQuery } from "@tanstack/react-query"
+import { Dropdown, Table } from "flowbite-react"
+import { Link } from "react-router-dom"
+import UserService from "~/common/services/UserService"
 
 const UsersPage = () => {
+  const {data, isFetched } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => await UserService.GetAll() 
+  })
+
   return (
     <div className="overflow-x-auto">
       <Table hoverable striped>
@@ -20,19 +28,50 @@ const UsersPage = () => {
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              {'Apple MacBook Pro 17"'}
-            </Table.Cell>
-            <Table.Cell>Sliver</Table.Cell>
-            <Table.Cell>Laptop</Table.Cell>
-            <Table.Cell>$2999</Table.Cell>
-            <Table.Cell>
-              <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                Edit
-              </a>
-            </Table.Cell>
-          </Table.Row>
+          {
+            isFetched && data?.ok && data.data != null &&
+            data.data.map(x => 
+              <Table.Row key={x._id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.fullName}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.identityDocument}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.email}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.birthDate.toString()}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.bloodType}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.type}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.audit.createdBy}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.audit.createdAt.toString()}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.audit.updatedBy}
+                </Table.Cell>
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                  {x.audit.updatedAt?.toString()}
+                </Table.Cell>
+                <Table.Cell>
+                <Dropdown label="Actions" dismissOnClick={true}>
+                  <Dropdown.Item as={Link} to={`/admin/user/update/${x._id}`} className="font-medium text-cyan-600 dark:text-cyan-500">
+                    Edit
+                  </Dropdown.Item>
+                </Dropdown>
+                </Table.Cell>
+              </Table.Row>
+            )
+          }
         </Table.Body>
       </Table>
     </div>
