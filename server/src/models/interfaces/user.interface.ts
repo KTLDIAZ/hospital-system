@@ -9,7 +9,7 @@ export interface AppUser  {
   bloodType: string
   password?: string
   type: string
-  medicalHistory?: [MedicalHistory]
+  medicalHistory: [MedicalHistory]
   specialties?: [string],
   audit: Audit
   isDisabled: boolean
@@ -29,7 +29,7 @@ export interface PrescriptionMedicine {
 export interface MedicalHistory {
   diagnosis: string
   observation: string
-  prescription: PrescriptionMedicine
+  prescription: PrescriptionMedicine[]
   date: Date
   doctor: Doctor
 }

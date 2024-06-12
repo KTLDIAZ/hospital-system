@@ -22,6 +22,7 @@ const medicineSchema = new Schema<AppMedicine>({
   quantity: { type: Number, required: false, default: 0 },
   inventory: { type: [inventorySchema], default: [] },
   transactions: { type: [transactionsSchema], default: [] },
+  audit: { type: auditSchema, required: true },
 })
 
 export const Medicine = model('Medicines', medicineSchema)

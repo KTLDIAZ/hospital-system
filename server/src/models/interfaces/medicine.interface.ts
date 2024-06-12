@@ -8,6 +8,7 @@ export interface AppMedicine {
   quantity: number
   inventory: [Inventory]
   transactions: [InventoryTransaction]
+  audit: Audit
 }
 
 export interface Inventory {

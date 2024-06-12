@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom'
 import MedicinesPage from '~/modules/medicine/Index'
-import CreateMedicine from '~/modules/medicine/CreateMedicine'
-import UpdateMedicine from '~/modules/medicine/UpdateMedicine'
-import CreateTransaction from '~/modules/medicine/CreateTransaction'
-import SingleMedicine from '~/modules/medicine/SingleMedicine'
+import CreateMedicine from '~/modules/medicine/CreateMedicinePage'
+import CreateInventory from '~/modules/medicine/CreateInventoryPage'
+import CreateTransactionPage from '~/modules/medicine/CreateTransactionPage'
+import SingleMedicine from '~/modules/medicine/SingleMedicinePage'
 import PrivateRoute from './PrivateRoute'
 
 const MedicineRoutes = () => {
@@ -12,16 +12,16 @@ const MedicineRoutes = () => {
       <Route path="/" element={<PrivateRoute />}>
         <Route index element={<MedicinesPage />} />
       </Route>
-      <Route path="/create" element={<PrivateRoute />}>
+      <Route path="create" element={<PrivateRoute />}>
         <Route index element={<CreateMedicine />} />
       </Route>
-      <Route path="/update" element={<PrivateRoute />}>
-        <Route index element={<UpdateMedicine />} />
+      <Route path=":id/create-inventory" element={<PrivateRoute />}>
+        <Route index element={<CreateInventory />} />
       </Route>
-      <Route path="/create-transaction" element={<PrivateRoute />}>
-        <Route index element={<CreateTransaction />} />
+      <Route path=":id/create-transaction" element={<PrivateRoute />}>
+        <Route index element={<CreateTransactionPage />} />
       </Route>
-      <Route path="/:id" element={<PrivateRoute />}>
+      <Route path=":id" element={<PrivateRoute />}>
         <Route index element={<SingleMedicine />} />
       </Route>
     </Routes>

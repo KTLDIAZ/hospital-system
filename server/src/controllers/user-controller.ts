@@ -1,12 +1,13 @@
 import { Request, Response } from 'express'
 import { UserModel } from '../models/user-model.js';
-import { AppUser } from '../models/interfaces/user.interface.js';
+import { AppUser, MedicalHistory } from '../models/interfaces/user.interface.js';
 import mongoose from 'mongoose';
 import { isInRole } from '../infrastructure/is-in-role.js';
 import { ROLES } from '../common/constants/role.js';
 import { PATIENT_TYPE } from '../common/constants/user-types.js';
 import { getPayload } from '../infrastructure/jwt.js';
 import { Role } from '../models/interfaces/role.interface.js';
+import { getClaims } from '../infrastructure/get-claims.js';
 
 export class UserContoller {
 
@@ -84,6 +85,33 @@ export class UserContoller {
     return res.status(201).json({ ok: true, data: response, message: null })
   }
 
+  static async createMedicalHistory(req: Request, res: Response) {
+    const userId = new mongoose.Types.ObjectId(req.params.id as string)
+    
+    const claims = await getClaims(req.cookies.token)
+    if (claims === null)
+      return res.status(404).json({ ok: false, data: null, message: 'User not found' }) 
+
+    const user = await UserModel.getById(new mongoose.Types.ObjectId(claims['userId'] as string))
+    if (user === null)
+      return res.status(404).json({ ok: false, data: null, message: 'User not found' })
+
+    const newMedicalHistory:MedicalHistory = {
+      ...req.body,
+      doctor: {
+        name: user.fullName,
+        specialties: user.specialties
+      }
+    }
+
+    const response = await UserModel.createMedicalHistory(newMedicalHistory, userId)
+
+    if (response == null) 
+      return res.status(404).json({ ok: false, data: null, message: 'User not found' }) 
+
+    return res.status(200).json({ ok: true, data: null, message: 'The medical history has been updated' })
+  }
+
   static async setType(req: Request, res: Response) {
     const userId = new mongoose.Types.ObjectId(req.params.id as string)
 
@@ -92,7 +120,7 @@ export class UserContoller {
     if (response == null) 
       return res.status(204).json({ ok: false, data: null, message: 'User not found' }) 
 
-    return res.status(200).json({ ok: true, data: null, message: 'The type have been updated' })
+    return res.status(200).json({ ok: true, data: null, message: 'The type has been updated' })
   }
 
 }

@@ -22,20 +22,17 @@ export class MedicineModel {
     return newMedicine
   }
 
-  static async createInventories(id: Types.ObjectId, inventories: [Inventory]) {
+  static async createInventory(id: Types.ObjectId, inventory: Inventory) {
     const medicine = await Medicine.findById(id)
     if (medicine == null) return false
 
-    medicine.inventory.push(...inventories)
-
-    for (const inventory of inventories) {
-      medicine.inventory.push(inventory)
-      medicine.quantity += inventory.quantity
-    }
+    medicine.inventory.push(inventory)
+    console.log(inventory)
+    medicine.quantity += inventory.quantity
 
     await medicine.save()
     
-    return medicine.inventory
+    return true
   }
 
   static async createTransactions(id: Types.ObjectId, transactions: [InventoryTransaction]) {
@@ -54,7 +51,7 @@ export class MedicineModel {
 
     await medicine.save()
     
-    return medicine.inventory
+    return true
   }
 
 }

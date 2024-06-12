@@ -1,34 +1,17 @@
 import axios from 'axios'
-import { ApiResponse } from '../types/api.interface'
 import AxiosInstance from './AxiosInstance'
-import { AppUser, CreateUser, CreateMedicalHistory, UserByIdentity } from '../types/user.interface'
+import { ApiResponse } from '../types/api.interface'
+import {
+  AppMedicine,
+  CreateMedicine,
+  CreateMedicineInventory,
+  CreateMedicineTransaction
+} from '../types/medicine'
 
-export default class UserService {
-  static async GetByIdentity(identity: string) {
+export default class MedicineService {
+  static async Create(meidicne: CreateMedicine): Promise<ApiResponse<string>> {
     try {
-      const response = await AxiosInstance.get<ApiResponse<UserByIdentity>>(
-        `/user/identity/${identity}`,
-        { withCredentials: true }
-      )
-
-      return response.data
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return error.response?.data
-      } else {
-        const response: ApiResponse<UserByIdentity> = {
-          data: null,
-          message: 'An error has ocurred',
-          ok: false
-        }
-        return response
-      }
-    }
-  }
-
-  static async CreateUser(user: CreateUser): Promise<ApiResponse<string>> {
-    try {
-      const response = await AxiosInstance.post<ApiResponse<string>>('/user', user)
+      const response = await AxiosInstance.post<ApiResponse<string>>('/medicine', meidicne)
 
       return response.data
     } catch (error) {
@@ -45,16 +28,16 @@ export default class UserService {
     }
   }
 
-  static async GetAll(): Promise<ApiResponse<AppUser[]>> {
+  static async GetAll(): Promise<ApiResponse<AppMedicine[]>> {
     try {
-      const response = await AxiosInstance.get<ApiResponse<AppUser[]>>('/user')
+      const response = await AxiosInstance.get<ApiResponse<AppMedicine[]>>('/medicine')
 
       return response.data
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return error.response?.data
       } else {
-        const response: ApiResponse<AppUser[]> = {
+        const response: ApiResponse<AppMedicine[]> = {
           data: [],
           message: 'An error has ocurred',
           ok: false
@@ -64,16 +47,16 @@ export default class UserService {
     }
   }
 
-  static async GetById(id: string): Promise<ApiResponse<AppUser>> {
+  static async GetById(id: string): Promise<ApiResponse<AppMedicine>> {
     try {
-      const response = await AxiosInstance.get<ApiResponse<AppUser>>(`/user/${id}`)
+      const response = await AxiosInstance.get<ApiResponse<AppMedicine>>(`/medicine/${id}`)
 
       return response.data
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return error.response?.data
       } else {
-        const response: ApiResponse<AppUser> = {
+        const response: ApiResponse<AppMedicine> = {
           data: null,
           message: 'An error has ocurred',
           ok: false
@@ -83,14 +66,39 @@ export default class UserService {
     }
   }
 
-  static async CreateMedicalHistory(
-    medicalHistory: CreateMedicalHistory,
+  static async CreateInventory(
+    inventory: CreateMedicineInventory,
     id: string
   ): Promise<ApiResponse<string>> {
     try {
       const response = await AxiosInstance.post<ApiResponse<string>>(
-        `/user/${id}/medical-history`,
-        medicalHistory
+        `/medicine/${id}/inventory`,
+        inventory
+      )
+
+      return response.data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return error.response?.data
+      } else {
+        const response: ApiResponse<string> = {
+          data: '',
+          message: 'An error has ocurred',
+          ok: false
+        }
+        return response
+      }
+    }
+  }
+
+  static async CreateTransaction(
+    transaction: CreateMedicineTransaction,
+    id: string
+  ): Promise<ApiResponse<string>> {
+    try {
+      const response = await AxiosInstance.post<ApiResponse<string>>(
+        `/medicine/${id}/transaction`,
+        transaction
       )
 
       return response.data

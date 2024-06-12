@@ -28,12 +28,21 @@ export interface PrescriptionMedicine {
 }
 
 export interface MedicalHistory {
+  _id: string
   diagnosis: string
   observation: string
-  prescription: PrescriptionMedicine
+  prescription: PrescriptionMedicine[]
   date: Date
   doctor: Doctor
 }
+
+interface RemoveForCreateMedicalHistory {
+  _id: string
+  date: Date
+  doctor: Doctor
+}
+
+export type CreateMedicalHistory = Omit<MedicalHistory, keyof RemoveForCreateMedicalHistory>
 
 interface RemoveForCreateUser {
   _id: string
@@ -59,6 +68,6 @@ export interface UserByIdentity {
   fullName: string
   identityDocument: string
   isDisabled: boolean
-  specialties: []
+  specialties?: string[]
   type: string
 }

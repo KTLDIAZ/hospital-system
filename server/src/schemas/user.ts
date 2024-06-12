@@ -17,9 +17,9 @@ const prescriptionSchema = new Schema<PrescriptionMedicine>({
 const medicalHistorySchema = new Schema<MedicalHistory>({
   diagnosis: { type: String, required: true },
   observation: String,
-  prescription: [{ type: prescriptionSchema, required: true }],
+  prescription: { type: [prescriptionSchema], required: true },
   date: { type: Date, default: Date.now },
-  doctor: [{ type: doctorSchema, required: true }]
+  doctor: { type: doctorSchema, required: true }
 })
 
 const userSchema = new Schema<AppUser>({

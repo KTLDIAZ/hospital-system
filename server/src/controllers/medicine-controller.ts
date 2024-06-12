@@ -1,7 +1,9 @@
 import { Request, Response } from 'express' 
 import { MedicineModel } from '../models/medicine-model.js'
-import { Types } from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 import { AppMedicine, Inventory, InventoryTransaction } from '../models/interfaces/medicine.interface.js'
+import { UserModel } from '../models/user-model.js'
+import { getPayload } from '../infrastructure/jwt.js'
 
 export class MedicineController {
 
@@ -25,9 +27,24 @@ export class MedicineController {
 
   static async create(req: Request, res: Response) {
     const medicine: AppMedicine = {
-      ...req.body
+      ...req.body,
+      quantity: 0
     }
 
+    const payload = await getPayload(req.cookies.token)
+
+    if (payload === null)
+      return res.json({ ok: false, data: null, message: 'Not found' })
+
+    const creator = await UserModel.getById(new mongoose.Types.ObjectId(payload['userId'] as string));
+    if (creator === null)
+      return res.json({ ok: false, data: null, message: 'Not found' })
+
+    medicine.audit = {
+      createdBy: creator.fullName,
+      creatorId: creator._id,
+      createdAt: new Date()
+    }
     const response =  await MedicineModel.create(medicine)
 
     return res.status(201).json({ ok: true, data: response, message: null})
@@ -36,9 +53,23 @@ export class MedicineController {
   static async createInventory(req: Request, res: Response) {
     const medicineId = new Types.ObjectId(req.params.id)
 
-    const inventories = [...req.body.inventories] as unknown as [Inventory]
+    const payload = await getPayload(req.cookies.token)
+    if (payload === null)
+      return res.json({ ok: false, data: null, message: 'Not found' })
 
-    const response =  await MedicineModel.createInventories(medicineId, inventories)
+    const creator = await UserModel.getById(new mongoose.Types.ObjectId(payload['userId'] as string));
+    if (creator === null)
+      return res.json({ ok: false, data: null, message: 'Not found' })
+
+    req.body.audit = {
+      createdBy: creator.fullName,
+      creatorId: creator._id,
+      createdAt: new Date()
+    }
+
+    const response =  await MedicineModel.createInventory(medicineId, req.body)
+    if (!response)
+      return res.status(204).json({ ok: false, data: null, message: 'There isn\'t any medicine' })
 
     return res.status(201).json({ ok: true, data: response, message: null}) 
   }
@@ -46,9 +77,11 @@ export class MedicineController {
   static async createTransactions(req: Request, res: Response) {
     const medicineId = new Types.ObjectId(req.params.id)
 
-    const inventories = [...req.body.inventories] as unknown as [InventoryTransaction]
+    const inventories = req.body.inventories
 
     const response =  await MedicineModel.createTransactions(medicineId, inventories)
+    if (!response)
+      return res.status(204).json({ ok: false, data: null, message: 'There isn\'t any medicine' })
 
     return res.status(201).json({ ok: true, data: response, message: null}) 
   }

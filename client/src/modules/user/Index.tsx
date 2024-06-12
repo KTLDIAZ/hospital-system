@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { Dropdown, Table } from 'flowbite-react'
-import { Link } from 'react-router-dom'
+import { Button, Dropdown, Table } from 'flowbite-react'
+import { Link, NavLink } from 'react-router-dom'
 import UserService from '~/common/services/UserService'
 
 const UsersPage = () => {
@@ -24,7 +24,10 @@ const UsersPage = () => {
           <Table.HeadCell>Updated By</Table.HeadCell>
           <Table.HeadCell>Updated At</Table.HeadCell>
           <Table.HeadCell>
-            <span className="sr-only">Edit</span>
+            <Button as={NavLink} to="/admin/user/create">
+              Create
+            </Button>
+            <span className="sr-only">Actions</span>
           </Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
@@ -71,6 +74,13 @@ const UsersPage = () => {
                       className="font-medium text-cyan-600 dark:text-cyan-500"
                     >
                       Edit
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      as={Link}
+                      to={`/user/${x._id}`}
+                      className="font-medium text-cyan-600 dark:text-cyan-500"
+                    >
+                      View
                     </Dropdown.Item>
                   </Dropdown>
                 </Table.Cell>

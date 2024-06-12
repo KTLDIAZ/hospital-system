@@ -3,25 +3,12 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Label, Select } from 'flowbite-react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { toZod } from 'tozod'
-import * as z from 'zod'
 import AuthService from '~/common/services/AuthService'
 import UserService from '~/common/services/UserService'
 import { ApiResponse } from '~/common/types/api.interface'
 import { CreateUser } from '~/common/types/user.interface'
 import InputGroup from '~/components/InputGroup'
-
-const schema: toZod<CreateUser> = z.object({
-  birthDate: z.date(),
-  bloodType: z.string(),
-  email: z.string().email(),
-  fullName: z.string().min(5),
-  type: z.string(),
-  identityDocument: z.string(),
-  password: z.string().min(8),
-  roles: z.array(z.object({ name: z.string() })),
-  specialties: z.array(z.string()).optional()
-})
+import { userSchema } from './schema'
 
 const CreateUserPage = () => {
   const navigate = useNavigate()
@@ -32,7 +19,7 @@ const CreateUserPage = () => {
     formState: { errors }
   } = useForm<CreateUser>({
     shouldFocusError: true,
-    resolver: zodResolver(schema)
+    resolver: zodResolver(userSchema)
   })
 
   const { data, isFetched } = useQuery<ApiResponse<object>>({
