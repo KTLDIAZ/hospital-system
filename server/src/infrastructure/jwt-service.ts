@@ -19,6 +19,15 @@ export default class JWTService {
     return jwt
   }
 
+  private static async getPayload(token: string) {
+    if (!token) return null
+    
+    const secret = new TextEncoder().encode(Enviroment.secret)
+    
+    const { payload } = await jwtVerify(token, secret)
+    
+    return payload
+  }
   
   static async getClaims(token: string) {
     const payload = await this.getPayload(token)
@@ -32,26 +41,13 @@ export default class JWTService {
     return claims
   }
 
-  private static async getPayload(token: string) {
-    if (!token) return null
-  
-    const secret = new TextEncoder().encode(Enviroment.secret)
-
-    const { payload } = await jwtVerify(token, secret)
-
-    return payload
-  }
-
   static async isInRole(roles: string[], token: string) {
       if (!token) return false
       
-      const secret = new TextEncoder().encode(Enviroment.secret)
-  
-      const { payload } = await jwtVerify(token, secret)
-  
-      const userId = payload['userId'] as string
+      const claims = await this.getClaims(token)
+      if (claims === null) return false
       
-      const isInRole = await UserModel.IsInRole(new Types.ObjectId(userId), roles)
+      const isInRole = await UserModel.IsInRole(claims.userId, roles)
       return isInRole
   }
 }
