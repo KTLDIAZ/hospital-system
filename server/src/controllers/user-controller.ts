@@ -1,13 +1,11 @@
 import { Request, Response } from 'express'
 import { UserModel } from '../models/user-model.js';
-import { AppUser, MedicalHistory } from '../models/interfaces/user.interface.js';
+import { AppUser, MedicalHistory } from '../models/types/user.interface.js';
 import mongoose from 'mongoose';
-import { isInRole } from '../infrastructure/is-in-role.js';
 import { ROLES } from '../common/constants/role.js';
 import { PATIENT_TYPE } from '../common/constants/user-types.js';
-import { getPayload } from '../infrastructure/jwt.js';
-import { Role } from '../models/interfaces/role.interface.js';
-import { getClaims } from '../infrastructure/get-claims.js';
+import  JWTService from '../infrastructure/jwt-service.js';
+import { Role } from '../models/types/role.interface.js';
 
 export class UserContoller {
 
@@ -45,12 +43,12 @@ export class UserContoller {
     if (exist != null)
       return res.json({ ok: false, data: null, message: `User with identity: ${req.body.identityDocument} already exist'}` })
 
-    const payload = await getPayload(req.cookies.token)
+    const claims = await JWTService.getClaims(req.cookies.token)
 
-    if (payload === null)
+    if (claims === null)
       return res.json({ ok: false, data: null, message: 'Not found' })
 
-    const creator = await UserModel.getById(new mongoose.Types.ObjectId(payload['userId'] as string));
+    const creator = await UserModel.getById(claims.userId);
 
     const user: AppUser = {
       ...req.body,
@@ -62,7 +60,7 @@ export class UserContoller {
       isDisabled: false
     }
       
-    if (!(await isInRole([ROLES.ADMIN], req.cookies.token))) {
+    if (!(await JWTService.isInRole([ROLES.ADMIN], req.cookies.token))) {
       user.roles = []
       user.type = PATIENT_TYPE
     } else {
@@ -88,17 +86,18 @@ export class UserContoller {
   static async createMedicalHistory(req: Request, res: Response) {
     const userId = new mongoose.Types.ObjectId(req.params.id as string)
     
-    const claims = await getClaims(req.cookies.token)
+    const claims = await JWTService.getClaims(req.cookies.token)
     if (claims === null)
       return res.status(404).json({ ok: false, data: null, message: 'User not found' }) 
 
-    const user = await UserModel.getById(new mongoose.Types.ObjectId(claims['userId'] as string))
+    const user = await UserModel.getById(claims.userId)
     if (user === null)
       return res.status(404).json({ ok: false, data: null, message: 'User not found' })
 
     const newMedicalHistory:MedicalHistory = {
       ...req.body,
       doctor: {
+        doctorId: user._id,
         name: user.fullName,
         specialties: user.specialties
       }
@@ -109,18 +108,7 @@ export class UserContoller {
     if (response == null) 
       return res.status(404).json({ ok: false, data: null, message: 'User not found' }) 
 
-    return res.status(200).json({ ok: true, data: null, message: 'The medical history has been updated' })
-  }
-
-  static async setType(req: Request, res: Response) {
-    const userId = new mongoose.Types.ObjectId(req.params.id as string)
-
-    const response = await UserModel.setType(req.body.type, userId)
-
-    if (response == null) 
-      return res.status(204).json({ ok: false, data: null, message: 'User not found' }) 
-
-    return res.status(200).json({ ok: true, data: null, message: 'The type has been updated' })
+    return res.status(200).json({ ok: true, data: null, message: 'The medical history has been created' })
   }
 
 }

@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { Inventory, InventoryTransaction, AppMedicine } from '../models/interfaces/medicine.interface.js'
+import { Inventory, InventoryTransaction, AppMedicine } from '../models/types/medicine.interface.js'
 import { auditSchema } from './audit.js';
 
 const transactionsSchema = new Schema<InventoryTransaction>({

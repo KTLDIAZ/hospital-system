@@ -2,8 +2,9 @@ import bcrypt from 'bcrypt'
 import { Types } from 'mongoose'
 
 import { UserModel } from '../models/user-model.js'
-import { createToken } from './jwt.js'
+import JWTService from './jwt-service.js'
 import { PATIENT_TYPE, USER_TYPES } from '../common/constants/user-types.js'
+import { Claims } from './types/jwt.interface.js'
 
 export class AuthService {
 
@@ -16,7 +17,12 @@ export class AuthService {
     const passwordMatch = await bcrypt.compare(password, user.password!)
     if(!passwordMatch) return null
 
-    return createToken(user.id)
+    const claims: Claims =  {
+      userId: user._id,
+      roles: user.roles.map(x => x.name)
+    }
+
+    return JWTService.createToken(claims)
   }
 
   static async changePassword(userId: Types.ObjectId, oldPassword: string, newPassword: string) {

@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { Role } from './role.interface';
 import { Audit } from './shared.interface';
 
@@ -17,6 +18,7 @@ export interface AppUser  {
 }
 
 export interface Doctor {
+  doctorId: Types.ObjectId
   name: string
   specialties: [string]
 }

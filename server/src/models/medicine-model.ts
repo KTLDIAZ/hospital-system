@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 import { Medicine } from '../schemas/medicine.js';
-import { AppMedicine, Inventory, InventoryTransaction } from './interfaces/medicine.interface.js'
+import { AppMedicine, Inventory, InventoryTransaction } from './types/medicine.interface.js'
 
 export class MedicineModel {
 
@@ -27,7 +27,6 @@ export class MedicineModel {
     if (medicine == null) return false
 
     medicine.inventory.push(inventory)
-    console.log(inventory)
     medicine.quantity += inventory.quantity
 
     await medicine.save()

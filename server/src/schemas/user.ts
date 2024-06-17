@@ -1,10 +1,11 @@
 import { Schema, model } from 'mongoose'
-import { Doctor, MedicalHistory, PrescriptionMedicine, AppUser } from '../models/interfaces/user.interface.js'
+import { Doctor, MedicalHistory, PrescriptionMedicine, AppUser } from '../models/types/user.interface.js'
 import { auditSchema } from './audit.js';
 import { USER_TYPES } from '../common/constants/user-types.js';
 import { roleSchema } from './role.js';
 
 const doctorSchema = new Schema<Doctor>({
+  doctorId: { type: Schema.Types.ObjectId , required: true},
   name: { type: String, required: true },
   specialties: [{ type: String, required: true }],
 })

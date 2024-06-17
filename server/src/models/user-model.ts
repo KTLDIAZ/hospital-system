@@ -1,13 +1,13 @@
 import { User } from '../schemas/user.js'
 import { Types } from 'mongoose'
-import { AppUser, MedicalHistory } from './interfaces/user.interface.js'
+import { AppUser, MedicalHistory } from './types/user.interface.js'
 import bcrypt from 'bcrypt'
 import { PATIENT_TYPE } from '../common/constants/user-types.js'
 
 export class UserModel {
 
   static async getById(id: Types.ObjectId) {
-    const user = await User.findById(id)
+    const user = await User.findById(id).select({ password: 0 })
     return user
   }
 
@@ -66,17 +66,6 @@ export class UserModel {
 
     user.medicalHistory.push(medicalHistory)
 
-    await user.save()
-
-    return true
-  }
-
-  static async setType(type: string, userId: Types.ObjectId) {
-    let user = await this.getById(userId)
-    if (user == null)
-      return false
-
-    user.type = type
     await user.save()
 
     return true

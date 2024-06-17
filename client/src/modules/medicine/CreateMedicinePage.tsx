@@ -10,10 +10,10 @@ import { CreateMedicine } from '~/common/types/medicine'
 import InputGroup from '~/components/InputGroup'
 
 const schema: toZod<CreateMedicine> = z.object({
-  brand: z.string(),
-  content: z.string(),
-  description: z.string(),
-  name: z.string()
+  name: z.string().min(4),
+  brand: z.string().min(4),
+  content: z.string().min(4),
+  description: z.string().min(4)
 })
 
 const CreateMedicinePage = () => {
@@ -46,8 +46,8 @@ const CreateMedicinePage = () => {
   })
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
+    <div className="flex items-center justify-center flex-col">
+      <form onSubmit={onSubmit} className="flex px-5 min-w-80 md:w-96 flex-col gap-4">
         <InputGroup
           label="Name"
           id="name"

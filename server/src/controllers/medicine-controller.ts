@@ -1,9 +1,9 @@
 import { Request, Response } from 'express' 
 import { MedicineModel } from '../models/medicine-model.js'
 import mongoose, { Types } from 'mongoose'
-import { AppMedicine, Inventory, InventoryTransaction } from '../models/interfaces/medicine.interface.js'
+import { AppMedicine } from '../models/types/medicine.interface.js'
 import { UserModel } from '../models/user-model.js'
-import { getPayload } from '../infrastructure/jwt.js'
+import JWTService from '../infrastructure/jwt-service.js'
 
 export class MedicineController {
 
@@ -31,12 +31,12 @@ export class MedicineController {
       quantity: 0
     }
 
-    const payload = await getPayload(req.cookies.token)
+    const claims = await  JWTService.getClaims(req.cookies.token)
 
-    if (payload === null)
+    if (claims === null)
       return res.json({ ok: false, data: null, message: 'Not found' })
 
-    const creator = await UserModel.getById(new mongoose.Types.ObjectId(payload['userId'] as string));
+    const creator = await UserModel.getById(claims.userId);
     if (creator === null)
       return res.json({ ok: false, data: null, message: 'Not found' })
 
@@ -53,11 +53,11 @@ export class MedicineController {
   static async createInventory(req: Request, res: Response) {
     const medicineId = new Types.ObjectId(req.params.id)
 
-    const payload = await getPayload(req.cookies.token)
-    if (payload === null)
+    const claims = await JWTService.getClaims(req.cookies.token)
+    if (claims === null)
       return res.json({ ok: false, data: null, message: 'Not found' })
 
-    const creator = await UserModel.getById(new mongoose.Types.ObjectId(payload['userId'] as string));
+    const creator = await UserModel.getById(claims.userId);
     if (creator === null)
       return res.json({ ok: false, data: null, message: 'Not found' })
 

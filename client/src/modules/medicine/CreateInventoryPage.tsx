@@ -65,8 +65,8 @@ const CreateInventoryForm = ({ id }: { id: string }) => {
   }
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
+    <div className="flex items-center justify-center flex-col">
+      <form onSubmit={onSubmit} className="flex px-5 min-w-80 md:w-96 flex-col gap-4">
         <InputGroup
           label="Quantity"
           id="quantity"

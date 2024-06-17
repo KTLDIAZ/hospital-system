@@ -13,6 +13,5 @@ router.get('/:id', isInRoleMiddleware([ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECPTION
 router.get('/identity/:identity', isInRoleMiddleware([ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECPTIONIST]), UserContoller.getByIdentityDocument)
 router.post('/', UserContoller.create)
 router.post('/:id/medical-history', UserContoller.createMedicalHistory)
-router.patch('/type/:id', isInRoleMiddleware([ROLES.ADMIN]), UserContoller.setType)
 
 export default router

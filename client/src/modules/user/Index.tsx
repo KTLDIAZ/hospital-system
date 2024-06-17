@@ -68,13 +68,13 @@ const UsersPage = () => {
                 </Table.Cell>
                 <Table.Cell>
                   <Dropdown label="Actions" dismissOnClick={true}>
-                    <Dropdown.Item
+                    {/* <Dropdown.Item
                       as={Link}
                       to={`/admin/user/update/${x._id}`}
                       className="font-medium text-cyan-600 dark:text-cyan-500"
                     >
                       Edit
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
                     <Dropdown.Item
                       as={Link}
                       to={`/user/${x._id}`}

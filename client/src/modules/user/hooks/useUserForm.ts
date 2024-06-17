@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import AuthService from '~/common/services/AuthService'
 import { ApiResponse } from '~/common/types/api.interface'
-import { CreateUser } from '~/common/types/user.interface'
+import { AppUser, CreateUser } from '~/common/types/user.interface'
 import { userSchema } from '../schema'
 
-const useUserForm = () => {
+const useUserForm = (values: Partial<AppUser>) => {
   const {
     register,
     handleSubmit,
@@ -14,6 +14,7 @@ const useUserForm = () => {
     formState: { errors }
   } = useForm<CreateUser>({
     shouldFocusError: true,
+    defaultValues: values,
     resolver: zodResolver(userSchema)
   })
 

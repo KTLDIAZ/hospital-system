@@ -38,7 +38,7 @@ const CreateUserPage = () => {
     },
     onSuccess: response => {
       if (response.ok) {
-        navigate({ pathname: '/admin/user' })
+        navigate({ pathname: '/user' })
       } else {
         alert(response.message)
       }
@@ -66,11 +66,11 @@ const CreateUserPage = () => {
   }
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
+    <div className="flex items-center justify-center flex-col">
+      <form onSubmit={onSubmit} className="flex px-5 min-w-80 md:w-96 flex-col gap-4">
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="userTypes" value="Select the roles" />
+            <Label htmlFor="userTypes" value="Select the user type:" />
           </div>
           <Select id="userTypes" required {...register('type')}>
             {userTypesFetched &&
@@ -121,7 +121,7 @@ const CreateUserPage = () => {
         />
         <div>
           <div className="mb-2 block">
-            <Label htmlFor="roles" value="Select the roles" />
+            <Label htmlFor="roles" value="Select the roles:" />
           </div>
           <Select id="roles" multiple required onChange={onChangeRole}>
             {isFetched &&

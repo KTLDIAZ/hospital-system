@@ -34,6 +34,8 @@ const AppRouter = ({ children }: React.PropsWithChildren) => {
           </Route>
           <Route path=":id/create-medical-history" element={<CreateMedicalHistoryPage />} />
         </Route>
+
+        <Route path="/*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   )
