@@ -3,6 +3,7 @@ import { Types } from 'mongoose'
 import { AppUser, MedicalHistory } from './types/user.interface.js'
 import bcrypt from 'bcrypt'
 import { PATIENT_TYPE } from '../common/constants/user-types.js'
+import { UpdateAudit } from './types/shared.interface.js'
 
 export class UserModel {
 
@@ -70,6 +71,75 @@ export class UserModel {
 
     return true
   }
+
+  static async updateUser(user: AppUser, id: Types.ObjectId) {
+    const foundUser = await User.findById(id)
+    if(foundUser === null) return false
+
+    foundUser.fullName = user.fullName
+    foundUser.email = user.email
+    foundUser.birthDate = user.birthDate
+    foundUser.bloodType = user.bloodType
+    foundUser.identityDocument = user.identityDocument
+    foundUser.specialties = user.specialties
+    foundUser.type = user.type
+    foundUser.audit = {
+      ...foundUser.audit,
+      ...user.audit
+    }
+
+    console.log(foundUser.audit)
+    console.log(user.audit)
+
+    if (user.roles.length !== 0) {
+      let roles = []
+      for (const role of user.roles) {
+        const existRole = foundUser.roles.find(x => x.name === role.name) 
+
+        if (existRole !== undefined) {
+          roles.push(existRole)
+          continue
+        }
+
+        roles.push(role)
+      }
+      foundUser.roles = roles
+    }
+    
+    await foundUser.save()
+
+    return true
+  }
+
+  static async disable(id: Types.ObjectId, modifier: UpdateAudit) {
+    const user = await User.findById(id)
+    if (user === null) return false
+
+    user.isDisabled = true
+    user.audit = {
+      ...user.audit,
+      ...modifier
+    }
+
+    await user.save()
+
+    return true
+  }
+
+  static async enable(id: Types.ObjectId, modifier: UpdateAudit) {
+    const user = await User.findById(id)
+    if (user === null) return false
+
+    user.isDisabled = false
+    user.audit = {
+      ...user.audit,
+      ...modifier
+    }
+
+    await user.save()
+
+    return true
+ }
 
   static async IsInRole(id: Types.ObjectId, roles: string[]) {
     const user = await User.findById(id, { roles: 1})

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { UserModel } from '../models/user-model.js';
 import { AppUser, MedicalHistory } from '../models/types/user.interface.js';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { ROLES } from '../common/constants/role.js';
 import { PATIENT_TYPE } from '../common/constants/user-types.js';
 import  JWTService from '../infrastructure/jwt-service.js';
@@ -111,4 +111,85 @@ export class UserContoller {
     return res.status(200).json({ ok: true, data: null, message: 'The medical history has been created' })
   }
 
+
+  static async updateUser(req: Request, res: Response) {
+    const exist = await UserModel.getByIdentityDocument(req.body.identityDocument)
+
+    if (exist != null && exist._id.toString() !== req.params.id)
+      return res.json({ ok: false, data: null, message: `User with identity: ${req.body.identityDocument} already exist'}` })
+
+    const claims = await JWTService.getClaims(req.cookies.token)
+
+    if (claims === null)
+      return res.json({ ok: false, data: null, message: 'Not found' })
+
+    const modifier = await UserModel.getById(claims.userId);
+
+    const user: AppUser = {
+      ...req.body,
+      audit: {
+        updatedBy: modifier!.fullName,
+        updaterId: modifier!._id,
+        updatedAt: new Date()
+      }
+    }
+      
+    if (!(await JWTService.isInRole([ROLES.ADMIN], req.cookies.token))) {
+      user.roles = []
+      user.type = ''
+    } else {
+      user.roles = user.roles.map(x => {
+        const newRole: Role = {
+          name: x.name,
+          audit: {
+            createdBy: modifier!.fullName,
+            creatorId: modifier!._id,
+            createdAt: new Date()
+          }
+        }
+
+        return newRole
+      })
+    }
+
+    const response = await UserModel.updateUser(user, new Types.ObjectId(req.params.id));
+  
+    return res.status(201).json({ ok: true, data: response, message: null })
+  }
+
+  static async enable(req: Request, res: Response) {
+    const claims = await JWTService.getClaims(req.cookies.token)
+    if (claims === null) 
+      return res.json({ ok: false, data: null, message: 'Not found' })
+
+    const modifier = await UserModel.getById(claims.userId)
+    if (modifier === null)
+      return res.json({ ok: false, data: null, message: 'Not found' })
+
+    await UserModel.enable(new Types.ObjectId(req.params.id), {
+      updatedAt: new Date(),
+      updatedBy: modifier.fullName,
+      updaterId: modifier._id
+    })
+    
+    return res.status(200).json({ ok: true, data: null, message: null })
+  }
+
+  static async disable(req: Request, res: Response) {
+    const claims = await JWTService.getClaims(req.cookies.token)
+    if (claims === null) 
+      return res.json({ ok: false, data: null, message: 'Not found' })
+
+    const modifier = await UserModel.getById(claims.userId)
+    if (modifier === null)
+      return res.json({ ok: false, data: null, message: 'Not found' })
+
+    await UserModel.disable(new Types.ObjectId(req.params.id), {
+      updatedAt: new Date(),
+      updatedBy: modifier.fullName,
+      updaterId: modifier._id
+    })
+
+    return res.status(200).json({ ok: true, data: null, message: null })
+  }
 }

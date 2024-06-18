@@ -1,14 +1,12 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Button, Label, Select } from 'flowbite-react'
-import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import AuthService from '~/common/services/AuthService'
 import UserService from '~/common/services/UserService'
-import { ApiResponse } from '~/common/types/api.interface'
 import { CreateUser } from '~/common/types/user.interface'
 import InputGroup from '~/components/InputGroup'
-import { userSchema } from './schema'
+import useRoleUserQuery from './hooks/useUserForm'
+import { useForm } from 'react-hook-form'
+import { getUTCDate } from '~/common/utils/date'
 
 const CreateUserPage = () => {
   const navigate = useNavigate()
@@ -17,20 +15,24 @@ const CreateUserPage = () => {
     handleSubmit,
     setValue,
     formState: { errors }
-  } = useForm<CreateUser>({
-    shouldFocusError: true,
-    resolver: zodResolver(userSchema)
-  })
+  } = useForm<CreateUser>()
 
-  const { data, isFetched } = useQuery<ApiResponse<object>>({
-    queryKey: ['roles'],
-    queryFn: async () => await AuthService.GetRoles()
-  })
+  const { rolesQuery, userTypesQuery } = useRoleUserQuery()
 
-  const { data: userTypes, isFetched: userTypesFetched } = useQuery<ApiResponse<string[]>>({
-    queryKey: ['user-types'],
-    queryFn: async () => await AuthService.GetUserTypes()
-  })
+  const onChangeRole: React.ChangeEventHandler<HTMLSelectElement> = e => {
+    const roles = Array.from(e.target.selectedOptions, option => ({ name: option.value }))
+
+    setValue('roles', roles)
+  }
+
+  const onChangeBirthDate: React.ChangeEventHandler<HTMLInputElement> = e => {
+    setValue('birthDate', getUTCDate(e.target.value))
+  }
+
+  const onChangeSpecialties: React.ChangeEventHandler<HTMLInputElement> = e => {
+    const specialties = e.target.value.split(',')
+    setValue('specialties', specialties)
+  }
 
   const mutation = useMutation({
     mutationFn: (data: CreateUser) => {
@@ -46,24 +48,12 @@ const CreateUserPage = () => {
   })
 
   const onSubmit = handleSubmit(data => {
+    if (data.type === '') {
+      setValue('type', 'patient')
+    }
+
     mutation.mutate(data)
   })
-
-  const onChangeRole: React.ChangeEventHandler<HTMLSelectElement> = e => {
-    const roles = Array.from(e.target.selectedOptions, option => ({ name: option.value }))
-
-    setValue('roles', roles)
-  }
-
-  const onChangeBirthDate: React.ChangeEventHandler<HTMLInputElement> = e => {
-    const date = new Date(e.target.value)
-    setValue('birthDate', date)
-  }
-
-  const onChangeSpecialties: React.ChangeEventHandler<HTMLInputElement> = e => {
-    const specialties = e.target.value.split(',')
-    setValue('specialties', specialties)
-  }
 
   return (
     <div className="flex items-center justify-center flex-col">
@@ -73,9 +63,10 @@ const CreateUserPage = () => {
             <Label htmlFor="userTypes" value="Select the user type:" />
           </div>
           <Select id="userTypes" required {...register('type')}>
-            {userTypesFetched &&
-              userTypes?.ok &&
-              userTypes.data!.map(x => (
+            <option value="">Select a user type</option>
+            {userTypesQuery.isFetched &&
+              userTypesQuery?.data?.ok &&
+              userTypesQuery.data.data!.map(x => (
                 <option value={x} key={x}>
                   {x}
                 </option>
@@ -124,9 +115,9 @@ const CreateUserPage = () => {
             <Label htmlFor="roles" value="Select the roles:" />
           </div>
           <Select id="roles" multiple required onChange={onChangeRole}>
-            {isFetched &&
-              data?.ok &&
-              Object.values(data.data as object).map(x => (
+            {rolesQuery.isFetched &&
+              rolesQuery.data?.ok &&
+              Object.values(rolesQuery.data.data as object).map(x => (
                 <option value={x} key={x}>
                   {x}
                 </option>

@@ -1,10 +1,12 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Label, Select, Spinner } from 'flowbite-react'
-import { Navigate, useParams } from 'react-router-dom'
+import { Navigate, useParams, useNavigate } from 'react-router-dom'
 import UserService from '~/common/services/UserService'
 import InputGroup from '~/components/InputGroup'
-import useUserForm from './hooks/useUserForm'
-import { AppUser } from '~/common/types/user.interface'
+import useRoleUserQuery from './hooks/useUserForm'
+import { AppUser, UpdateUser } from '~/common/types/user.interface'
+import { useForm } from 'react-hook-form'
+import { getUTCDate } from '~/common/utils/date'
 
 const UpdateUserPage = () => {
   const { id } = useParams()
@@ -28,19 +30,48 @@ const UpdateUserPage = () => {
 }
 
 const UpdateUserForm = (user: AppUser) => {
+  const navigate = useNavigate()
   const {
-    handleSubmit,
-    userTypesQuery,
     register,
-    errors,
-    onChangeBirthDate,
-    onChangeRole,
-    onChangeSpecialties,
-    rolesQuery
-  } = useUserForm(user)
+    handleSubmit,
+    setValue,
+    formState: { errors }
+  } = useForm<UpdateUser>({
+    defaultValues: {...user}
+  })
+
+  const { rolesQuery, userTypesQuery } = useRoleUserQuery()
+
+  const onChangeRole: React.ChangeEventHandler<HTMLSelectElement> = e => {
+    const roles = Array.from(e.target.selectedOptions, option => ({ name: option.value }))
+
+    setValue('roles', roles)
+  }
+
+  const onChangeBirthDate: React.ChangeEventHandler<HTMLInputElement> = e => {
+    setValue('birthDate', getUTCDate(e.target.value))
+  }
+
+  const onChangeSpecialties: React.ChangeEventHandler<HTMLInputElement> = e => {
+    const specialties = e.target.value.split(',')
+    setValue('specialties', specialties)
+  }
+
+  const mutation = useMutation({
+    mutationFn: (data: UpdateUser) => {
+      return UserService.Update(data, user._id)
+    },
+    onSuccess: response => {
+      if (response.ok) {
+        navigate({ pathname: '/user' })
+      } else {
+        alert(response.message)
+      }
+    }
+  })
 
   const onSubmit = handleSubmit(data => {
-    console.log(data)
+    mutation.mutate(data)
   })
 
   return (
@@ -54,7 +85,9 @@ const UpdateUserForm = (user: AppUser) => {
             {userTypesQuery.isFetched &&
               userTypesQuery?.data?.ok &&
               userTypesQuery.data.data!.map(x => (
-                <option value={x} key={x}>
+                <option value={x} key={x} 
+                selected={user.roles.find(r => r.name == x) !== undefined}
+                >
                   {x}
                 </option>
               ))}

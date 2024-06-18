@@ -12,15 +12,23 @@ const UserCard = ({
   type,
   isDisabled
 }: UserByIdentity) => {
+  const z = new Date(birthDate)
+  console.log(z)
+  const ageDifMs = Date.now() - new Date(birthDate).getTime()
+  const ageDate = new Date(ageDifMs)
+  console.log(ageDate)
+  const age = Math.abs(ageDate.getUTCFullYear() - 1970)
+
   return (
     <Card className="w-full">
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
         {fullName}
       </h5>
-      <P text="Blood type" value={bloodType} />
-      <P text="Email" value={email} />
       <P text="Identity" value={identityDocument} />
-      <P text="Birth date" value={birthDate} />
+      <P text="Age" value={age.toString()} />
+      <P text="Birth date" value={birthDate.slice(0, 10)} />
+      <P text="Email" value={email} />
+      <P text="Blood type" value={bloodType} />
       {specialties !== undefined && specialties.length > 0 && (
         <P text="Specialties" value={specialties.join()} />
       )}

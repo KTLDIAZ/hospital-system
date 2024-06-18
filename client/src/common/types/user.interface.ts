@@ -60,6 +60,19 @@ export interface CreateUser extends Omit<AppUser, keyof RemoveForCreateUser> {
   roles: RoleForCreateUser[]
 }
 
+interface RemoveForUpdateUser {
+  _id: string
+  audit: Audit
+  medicalHistory: [MedicalHistory]
+  isDisabled: boolean
+  roles: [Role]
+  password: string
+}
+
+export interface UpdateUser extends Omit<AppUser, keyof RemoveForUpdateUser> {
+  roles: RoleForCreateUser[]
+}
+
 export interface UserByIdentity {
   _id: string
   birthDate: string

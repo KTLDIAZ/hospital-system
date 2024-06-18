@@ -53,7 +53,9 @@ const Home = () => {
           {...register('identity')}
         />
       </form>
-      {isFetched && data?.ok && data.data !== null && <UserCard {...data.data} />}
+      {isFetched && data?.ok && data.data !== null && (
+        <UserCard {...data.data} birthDate={data.data.birthDate} />
+      )}
     </div>
   )
 }

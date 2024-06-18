@@ -7,11 +7,15 @@ import { ROLES } from '../common/constants/role.js'
 const router = express.Router()
 
 router.use(verifySession)
+router.use(isInRoleMiddleware([ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECPTIONIST, ROLES.STAFF]))
 
-router.get('/', isInRoleMiddleware([ROLES.ADMIN, ROLES.DOCTOR]), UserContoller.getAll)
-router.get('/:id', isInRoleMiddleware([ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECPTIONIST]), UserContoller.getById)
-router.get('/identity/:identity', isInRoleMiddleware([ROLES.ADMIN, ROLES.DOCTOR, ROLES.RECPTIONIST]), UserContoller.getByIdentityDocument)
+router.get('/', UserContoller.getAll)
+router.get('/:id', UserContoller.getById)
+router.get('/identity/:identity', UserContoller.getByIdentityDocument)
 router.post('/', UserContoller.create)
 router.post('/:id/medical-history', UserContoller.createMedicalHistory)
+router.put('/:id', UserContoller.updateUser)
+router.patch('/:id/disable', isInRoleMiddleware([ROLES.ADMIN]), UserContoller.disable)
+router.patch('/:id/enable', isInRoleMiddleware([ROLES.ADMIN]), UserContoller.enable)
 
 export default router
