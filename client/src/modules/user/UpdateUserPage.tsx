@@ -7,6 +7,9 @@ import useRoleUserQuery from './hooks/useUserForm'
 import { AppUser, UpdateUser } from '~/common/types/user.interface'
 import { useForm } from 'react-hook-form'
 import { getUTCDate } from '~/common/utils/date'
+import MainLayout from '~/components/MainLayout'
+import Form from '~/components/Form'
+import FormTitle from '~/components/FormTitle'
 
 const UpdateUserPage = () => {
   const { id } = useParams()
@@ -75,8 +78,9 @@ const UpdateUserForm = (user: AppUser) => {
   })
 
   return (
-    <div className="flex items-center justify-center flex-col">
-      <form onSubmit={onSubmit} className="flex px-5 min-w-80 md:w-96 flex-col gap-4">
+    <MainLayout>
+      <FormTitle>Update user</FormTitle>
+      <Form onSubmit={onSubmit}>
         <div>
           <div className="mb-2 block">
             <Label htmlFor="userTypes" value="Select the roles" />
@@ -151,8 +155,8 @@ const UpdateUserForm = (user: AppUser) => {
           </Select>
         </div>
         <Button type="submit">Edit</Button>
-      </form>
-    </div>
+      </Form>
+    </MainLayout>
   )
 }
 

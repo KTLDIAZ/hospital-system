@@ -12,11 +12,8 @@ const UserCard = ({
   type,
   isDisabled
 }: UserByIdentity) => {
-  const z = new Date(birthDate)
-  console.log(z)
   const ageDifMs = Date.now() - new Date(birthDate).getTime()
   const ageDate = new Date(ageDifMs)
-  console.log(ageDate)
   const age = Math.abs(ageDate.getUTCFullYear() - 1970)
 
   return (

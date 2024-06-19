@@ -8,7 +8,10 @@ import { toZod } from 'tozod'
 import { z } from 'zod'
 import UserService from '~/common/services/UserService'
 import { CreateMedicalHistory } from '~/common/types/user.interface'
+import Form from '~/components/Form'
+import FormTitle from '~/components/FormTitle'
 import InputGroup from '~/components/InputGroup'
+import MainLayout from '~/components/MainLayout'
 import P from '~/components/P'
 
 const schema: toZod<CreateMedicalHistory> = z.object({
@@ -82,8 +85,9 @@ const CreateMedicalHistoryForm = ({ id }: { id: string }) => {
   })
 
   return (
-    <div className="flex items-center justify-center flex-col">
-      <form onSubmit={onSubmit} className="flex px-5 min-w-80 md:w-96 flex-col gap-4">
+    <MainLayout>
+      <FormTitle>Create medical history</FormTitle>
+      <Form onSubmit={onSubmit}>
         <InputGroup
           label="Diagnosis"
           id="diagnosis"
@@ -112,8 +116,8 @@ const CreateMedicalHistoryForm = ({ id }: { id: string }) => {
 
         <hr />
         <Button type="submit">Create</Button>
-      </form>
-    </div>
+      </Form>
+    </MainLayout>
   )
 }
 

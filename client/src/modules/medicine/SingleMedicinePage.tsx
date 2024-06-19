@@ -58,9 +58,9 @@ const SingleMedicine = ({ id }: { id: string }) => {
         {medicine.inventory?.map(x => (
           <Card key={x._id}>
             <P text="Quantity" value={x.quantity.toString()} />
-            <P text="Expire at" value={x.expireAt.toString()} />
+            <P text="Expire at" value={new Date(x.expireAt).toLocaleString()} />
             <P text="SKU" value={x.sku} />
-            <P text="Created at" value={x.audit.createdAt.toString()} />
+            <P text="Created at" value={new Date(x.audit.createdAt).toLocaleString()} />
             <P text="Created by" value={x.audit.createdBy} />
           </Card>
         ))}

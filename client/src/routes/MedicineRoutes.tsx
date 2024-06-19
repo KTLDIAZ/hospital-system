@@ -11,18 +11,10 @@ const MedicineRoutes = () => {
     <Routes>
       <Route path="/" element={<PrivateRoute />}>
         <Route index element={<MedicinesPage />} />
-      </Route>
-      <Route path="create" element={<PrivateRoute />}>
-        <Route index element={<CreateMedicine />} />
-      </Route>
-      <Route path=":id/create-inventory" element={<PrivateRoute />}>
-        <Route index element={<CreateInventory />} />
-      </Route>
-      <Route path=":id/create-transaction" element={<PrivateRoute />}>
-        <Route index element={<CreateTransactionPage />} />
-      </Route>
-      <Route path=":id" element={<PrivateRoute />}>
-        <Route index element={<SingleMedicine />} />
+        <Route path="create" element={<CreateMedicine />} />
+        <Route path=":id/create-inventory" element={<CreateInventory />} />
+        <Route path=":id/create-transaction" element={<CreateTransactionPage />} />
+        <Route path=":id" element={<SingleMedicine />} />
       </Route>
     </Routes>
   )

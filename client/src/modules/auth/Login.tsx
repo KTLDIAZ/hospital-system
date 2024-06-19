@@ -7,6 +7,8 @@ import { useMutation } from '@tanstack/react-query'
 import AuthService from '~/common/services/AuthService'
 import { useLocation } from 'react-router-dom'
 import useAuth from '~/common/hooks/useAuth'
+import FormTitle from '~/components/FormTitle'
+import Form from '~/components/Form'
 
 const schema = z.object({
   email: z.string().email(),
@@ -44,10 +46,8 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center flex-col">
-      <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Hospital system
-      </h1>
-      <form onSubmit={onSubmit} className="flex px-5 min-w-80 md:w-96 flex-col gap-4">
+      <FormTitle>Hospital system</FormTitle>
+      <Form onSubmit={onSubmit}>
         <InputGroup
           autoFocus
           autoComplete="email"
@@ -66,7 +66,7 @@ const Login = () => {
           {...register('password')}
         />
         <Button type="submit">Login</Button>
-      </form>
+      </Form>
     </div>
   )
 }

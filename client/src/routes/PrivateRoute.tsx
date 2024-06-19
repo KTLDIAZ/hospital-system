@@ -1,6 +1,5 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import useAuth from '~/common/hooks/useAuth'
-import Layout from '~/components/Layout'
 
 const PrivateRoute = ({ isAllowed = true, redirectTo = '/' }: Props) => {
   const isAuthenticated = useAuth(x => x.isAuthenticated)
@@ -11,7 +10,9 @@ const PrivateRoute = ({ isAllowed = true, redirectTo = '/' }: Props) => {
   }
 
   return isAuthenticated ? (
-    <Layout children={<Outlet />} />
+    <div className="p-6">
+      <Outlet />{' '}
+    </div>
   ) : (
     <Navigate to="/auth/login" state={{ from: location }} />
   )

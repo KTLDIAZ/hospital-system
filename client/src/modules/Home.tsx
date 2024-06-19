@@ -42,7 +42,7 @@ const Home = () => {
   })
 
   return (
-    <div>
+    <>
       <form onSubmit={onSubmit} className="mb-5">
         <InputGroup
           autoFocus
@@ -56,7 +56,7 @@ const Home = () => {
       {isFetched && data?.ok && data.data !== null && (
         <UserCard {...data.data} birthDate={data.data.birthDate} />
       )}
-    </div>
+    </>
   )
 }
 

@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Button, Checkbox, Dropdown, Table } from 'flowbite-react'
 import { Link, NavLink } from 'react-router-dom'
 import UserService from '~/common/services/UserService'
+import TableCell from '~/components/TableCell'
 
 const UsersPage = () => {
   const queryClient = useQueryClient()
@@ -39,7 +40,7 @@ const UsersPage = () => {
 
   return (
     <div className="overflow-x-auto">
-      <Table hoverable striped>
+      <Table hoverable>
         <Table.Head>
           <Table.HeadCell>
             <Button as={NavLink} to="/admin/user/create">
@@ -65,7 +66,7 @@ const UsersPage = () => {
             data.data != null &&
             data.data.map(x => (
               <Table.Row key={x._id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <Table.Cell>
+                <TableCell>
                   <Dropdown label="Actions" dismissOnClick={true}>
                     <Dropdown.Item
                       as={Link}
@@ -97,40 +98,22 @@ const UsersPage = () => {
                       </Dropdown.Item>
                     )}
                   </Dropdown>
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {x.fullName}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {x.identityDocument}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {x.email}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {new Date(x.birthDate).toLocaleDateString()}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {x.bloodType}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {x.type}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {x.audit.createdBy}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {new Date(x.audit.createdAt).toLocaleString()}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                  {x.audit.updatedBy}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                </TableCell>
+                <TableCell>{x.fullName}</TableCell>
+                <TableCell>{x.identityDocument}</TableCell>
+                <TableCell>{x.email}</TableCell>
+                <TableCell>{new Date(x.birthDate).toLocaleDateString()}</TableCell>
+                <TableCell>{x.bloodType}</TableCell>
+                <TableCell>{x.type}</TableCell>
+                <TableCell>{x.audit.createdBy}</TableCell>
+                <TableCell>{new Date(x.audit.createdAt).toLocaleString()}</TableCell>
+                <TableCell>{x.audit.updatedBy}</TableCell>
+                <TableCell>
                   {x.audit.updatedAt && new Date(x.audit.updatedAt).toLocaleString()}
-                </Table.Cell>
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                </TableCell>
+                <TableCell>
                   <Checkbox checked={!x.isDisabled} disabled />
-                </Table.Cell>
+                </TableCell>
               </Table.Row>
             ))}
         </Table.Body>

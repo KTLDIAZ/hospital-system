@@ -29,9 +29,7 @@ const AppRouter = ({ children }: React.PropsWithChildren) => {
         <Route path="admin/*" element={<AdminRoutes />} />
         <Route path="user/*" element={<PrivateRoute />}>
           <Route index element={<UsersPage />} />
-          <Route path=":id" element={<PrivateRoute />}>
-            <Route index element={<SingleUserPage />} />
-          </Route>
+          <Route path=":id" element={<SingleUserPage />} />
           <Route path=":id/create-medical-history" element={<CreateMedicalHistoryPage />} />
         </Route>
 

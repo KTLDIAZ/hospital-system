@@ -7,6 +7,8 @@ import InputGroup from '~/components/InputGroup'
 import useRoleUserQuery from './hooks/useUserForm'
 import { useForm } from 'react-hook-form'
 import { getUTCDate } from '~/common/utils/date'
+import FormTitle from '~/components/FormTitle'
+import Form from '~/components/Form'
 
 const CreateUserPage = () => {
   const navigate = useNavigate()
@@ -56,8 +58,9 @@ const CreateUserPage = () => {
   })
 
   return (
-    <div className="flex items-center justify-center flex-col">
-      <form onSubmit={onSubmit} className="flex px-5 min-w-80 md:w-96 flex-col gap-4">
+    <div className="min-h-screen flex items-center justify-center flex-col">
+      <FormTitle>Create user</FormTitle>
+      <Form onSubmit={onSubmit}>
         <div>
           <div className="mb-2 block">
             <Label htmlFor="userTypes" value="Select the user type:" />
@@ -133,7 +136,7 @@ const CreateUserPage = () => {
           {...register('password')}
         />
         <Button type="submit">Create</Button>
-      </form>
+      </Form>
     </div>
   )
 }

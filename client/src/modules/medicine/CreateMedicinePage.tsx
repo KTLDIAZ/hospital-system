@@ -7,7 +7,10 @@ import { toZod } from 'tozod'
 import { z } from 'zod'
 import MedicineService from '~/common/services/MedicineService'
 import { CreateMedicine } from '~/common/types/medicine'
+import Form from '~/components/Form'
+import FormTitle from '~/components/FormTitle'
 import InputGroup from '~/components/InputGroup'
+import MainLayout from '~/components/MainLayout'
 
 const schema: toZod<CreateMedicine> = z.object({
   name: z.string().min(4),
@@ -46,8 +49,9 @@ const CreateMedicinePage = () => {
   })
 
   return (
-    <div className="flex items-center justify-center flex-col">
-      <form onSubmit={onSubmit} className="flex px-5 min-w-80 md:w-96 flex-col gap-4">
+    <MainLayout>
+      <FormTitle>Create medicine</FormTitle>
+      <Form onSubmit={onSubmit}>
         <InputGroup
           label="Name"
           id="name"
@@ -73,8 +77,8 @@ const CreateMedicinePage = () => {
           {...register('description')}
         />
         <Button type="submit">Create</Button>
-      </form>
-    </div>
+      </Form>
+    </MainLayout>
   )
 }
 
