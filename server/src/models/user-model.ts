@@ -88,9 +88,6 @@ export class UserModel {
       ...user.audit
     }
 
-    console.log(foundUser.audit)
-    console.log(user.audit)
-
     if (user.roles.length !== 0) {
       let roles = []
       for (const role of user.roles) {

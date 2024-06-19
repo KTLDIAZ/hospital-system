@@ -37,7 +37,7 @@ const UpdateUserForm = (user: AppUser) => {
     setValue,
     formState: { errors }
   } = useForm<UpdateUser>({
-    defaultValues: {...user}
+    defaultValues: { ...user }
   })
 
   const { rolesQuery, userTypesQuery } = useRoleUserQuery()
@@ -85,8 +85,10 @@ const UpdateUserForm = (user: AppUser) => {
             {userTypesQuery.isFetched &&
               userTypesQuery?.data?.ok &&
               userTypesQuery.data.data!.map(x => (
-                <option value={x} key={x} 
-                selected={user.roles.find(r => r.name == x) !== undefined}
+                <option
+                  value={x}
+                  key={x}
+                  selected={user.roles.find(r => r.name == x) !== undefined}
                 >
                   {x}
                 </option>
