@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie'
 import { createContext, useRef } from 'react'
-import { Navigate } from 'react-router-dom'
 import { createStore } from 'zustand'
 
 interface AuthProps {
@@ -20,7 +19,7 @@ const createAuthStore = (initProps: AuthProps) => {
     ...initProps,
     login: (path = '/') => {
       set({ isAuthenticated: true })
-      Navigate({ to: path })
+      window.location.replace(path)
     },
     logout: () => {
       Cookies.remove('token')

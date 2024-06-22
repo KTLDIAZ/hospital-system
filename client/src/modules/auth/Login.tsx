@@ -20,7 +20,7 @@ type Login = z.infer<typeof schema>
 const Login = () => {
   const login = useAuth(s => s.login)
   const location = useLocation()
-  const { search } = location
+  const { state } = location
 
   const {
     register,
@@ -36,7 +36,8 @@ const Login = () => {
       return AuthService.Login(data.email, data.password)
     },
     onSuccess: succeed => {
-      if (succeed) login(search)
+      const redirectTo  = state.from.pathname + state.from.search + state.from.hash
+      if (succeed) login(redirectTo)
     }
   })
 
