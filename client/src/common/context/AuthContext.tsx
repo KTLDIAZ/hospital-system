@@ -1,13 +1,15 @@
 import Cookies from 'js-cookie'
 import { createContext, useRef } from 'react'
 import { createStore } from 'zustand'
+import { decodeJwt } from 'jose'
 
 interface AuthProps {
-  isAuthenticated: boolean
+  token?: string
 }
 
 export interface AuthState extends AuthProps {
   isAuthenticated: boolean
+  roles: string[]
   login: (path: string) => void
   logout: () => void
 }
@@ -15,8 +17,17 @@ export interface AuthState extends AuthProps {
 export type AuthStore = ReturnType<typeof createAuthStore>
 
 const createAuthStore = (initProps: AuthProps) => {
+  let roles: string[] = []
+
+  const isAuthenticated = initProps.token !== undefined
+  if (isAuthenticated) {
+    const claims = decodeJwt(initProps.token!)
+    roles = claims.roles as string[]
+  }
+
   return createStore<AuthState>(set => ({
-    ...initProps,
+    isAuthenticated,
+    roles,
     login: (path = '/') => {
       set({ isAuthenticated: true })
       window.location.replace(path)

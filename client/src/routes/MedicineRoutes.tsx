@@ -9,7 +9,7 @@ import PrivateRoute from './PrivateRoute'
 const MedicineRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<PrivateRoute />}>
+      <Route path="/" element={<PrivateRoute allowedRoles={['admin', 'staff', 'doctor']} />}>
         <Route index element={<MedicinesPage />} />
         <Route path="create" element={<CreateMedicine />} />
         <Route path=":id/create-inventory" element={<CreateInventory />} />

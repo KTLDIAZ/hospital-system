@@ -4,6 +4,7 @@ import { NavLink, Navigate, useParams } from 'react-router-dom'
 import UserService from '~/common/services/UserService'
 import UserCard from '../components/UserCard'
 import P from '~/components/P'
+import useAuthorization from '~/common/hooks/useAuthorization'
 
 const SingleUserPage = () => {
   const { id } = useParams()
@@ -15,6 +16,8 @@ const SingleUserPage = () => {
 }
 
 const SingleUser = ({ id }: { id: string }) => {
+  const { isInRole } = useAuthorization()
+
   const { isLoading, data } = useQuery({
     queryKey: ['user-by-id'],
     queryFn: async () => await UserService.GetById(id)
@@ -40,9 +43,11 @@ const SingleUser = ({ id }: { id: string }) => {
         <h3 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Medical hisotry
         </h3>
-        <Button as={NavLink} to={`/user/${user._id}/create-medical-history`}>
-          Create medical history
-        </Button>
+        {isInRole(['admin', 'doctor']) && (
+          <Button as={NavLink} to={`/user/${user._id}/create-medical-history`}>
+            Create medical history
+          </Button>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         {user.medicalHistory !== undefined && user.medicalHistory.length < 1 && (

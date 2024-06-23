@@ -6,7 +6,7 @@ import PrivateRoute from './PrivateRoute'
 const AdminRoutes = () => {
   return (
     <Routes>
-      <Route path="/user/*" element={<PrivateRoute />}>
+      <Route path="/user/*" element={<PrivateRoute allowedRoles={['admin']} />}>
         <Route path="create" element={<CreateUserPage />} />
         <Route path="update/:id" element={<UpdateUserPage />} />
       </Route>

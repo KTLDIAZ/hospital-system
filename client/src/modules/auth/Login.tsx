@@ -36,7 +36,7 @@ const Login = () => {
       return AuthService.Login(data.email, data.password)
     },
     onSuccess: succeed => {
-      const redirectTo  = state.from.pathname + state.from.search + state.from.hash
+      const redirectTo = state.from.pathname + state.from.search + state.from.hash
       if (succeed) login(redirectTo)
     }
   })

@@ -9,9 +9,11 @@ import { useForm } from 'react-hook-form'
 import { getUTCDate } from '~/common/utils/date'
 import FormTitle from '~/components/FormTitle'
 import Form from '~/components/Form'
+import useAuthorization from '~/common/hooks/useAuthorization'
 
 const CreateUserPage = () => {
   const navigate = useNavigate()
+  const { isAdmin } = useAuthorization()
   const {
     register,
     handleSubmit,
@@ -61,21 +63,39 @@ const CreateUserPage = () => {
     <div className="min-h-screen flex items-center justify-center flex-col">
       <FormTitle>Create user</FormTitle>
       <Form onSubmit={onSubmit}>
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="userTypes" value="Select the user type:" />
-          </div>
-          <Select id="userTypes" required {...register('type')}>
-            <option value="">Select a user type</option>
-            {userTypesQuery.isFetched &&
-              userTypesQuery?.data?.ok &&
-              userTypesQuery.data.data!.map(x => (
-                <option value={x} key={x}>
-                  {x}
-                </option>
-              ))}
-          </Select>
-        </div>
+        {isAdmin && (
+          <>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="userTypes" value="Select the user type:" />
+              </div>
+              <Select id="userTypes" required {...register('type')}>
+                <option value="">Select a user type</option>
+                {userTypesQuery.isFetched &&
+                  userTypesQuery?.data?.ok &&
+                  userTypesQuery.data.data!.map(x => (
+                    <option value={x} key={x}>
+                      {x}
+                    </option>
+                  ))}
+              </Select>
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="roles" value="Select the roles:" />
+              </div>
+              <Select id="roles" multiple required onChange={onChangeRole}>
+                {rolesQuery.isFetched &&
+                  rolesQuery.data?.ok &&
+                  Object.values(rolesQuery.data.data as object).map(x => (
+                    <option value={x} key={x}>
+                      {x}
+                    </option>
+                  ))}
+              </Select>
+            </div>
+          </>
+        )}
         <InputGroup
           label="Fullname"
           id="fullName"
@@ -113,23 +133,9 @@ const CreateUserPage = () => {
           onChange={onChangeSpecialties}
           errorMessage={errors.specialties?.message}
         />
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="roles" value="Select the roles:" />
-          </div>
-          <Select id="roles" multiple required onChange={onChangeRole}>
-            {rolesQuery.isFetched &&
-              rolesQuery.data?.ok &&
-              Object.values(rolesQuery.data.data as object).map(x => (
-                <option value={x} key={x}>
-                  {x}
-                </option>
-              ))}
-          </Select>
-        </div>
         <InputGroup
           autoComplete="new-password"
-          label="Passwrod"
+          label="Password"
           id="password"
           type="password"
           errorMessage={errors.password?.message}

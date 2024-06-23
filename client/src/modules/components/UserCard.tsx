@@ -1,4 +1,5 @@
 import { Card } from 'flowbite-react'
+import useAuthorization from '~/common/hooks/useAuthorization'
 import { UserByIdentity } from '~/common/types/user.interface'
 import P from '~/components/P'
 
@@ -15,6 +16,7 @@ const UserCard = ({
   const ageDifMs = Date.now() - new Date(birthDate).getTime()
   const ageDate = new Date(ageDifMs)
   const age = Math.abs(ageDate.getUTCFullYear() - 1970)
+  const { isAdmin } = useAuthorization()
 
   return (
     <Card className="w-full">
@@ -30,7 +32,7 @@ const UserCard = ({
         <P text="Specialties" value={specialties.join()} />
       )}
       <P text="User type" value={type} />
-      <P text="Disabled" value={String(isDisabled)} />
+      {isAdmin && <P text="Disabled" value={String(isDisabled)} />}
     </Card>
   )
 }

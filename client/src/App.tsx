@@ -11,11 +11,11 @@ const App = () => {
 
   return (
     <Flowbite theme={{ mode: 'auto' }}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider isAuthenticated={token != null}>
+      <AuthProvider token={token}>
+        <QueryClientProvider client={queryClient}>
           <AppRouter />
-        </AuthProvider>
-      </QueryClientProvider>
+        </QueryClientProvider>
+      </AuthProvider>
     </Flowbite>
   )
 }

@@ -10,6 +10,7 @@ import { getUTCDate } from '~/common/utils/date'
 import MainLayout from '~/components/MainLayout'
 import Form from '~/components/Form'
 import FormTitle from '~/components/FormTitle'
+import useAuthorization from '~/common/hooks/useAuthorization'
 
 const UpdateUserPage = () => {
   const { id } = useParams()
@@ -34,6 +35,8 @@ const UpdateUserPage = () => {
 
 const UpdateUserForm = (user: AppUser) => {
   const navigate = useNavigate()
+  const { isAdmin } = useAuthorization()
+
   const {
     register,
     handleSubmit,
@@ -81,24 +84,46 @@ const UpdateUserForm = (user: AppUser) => {
     <MainLayout>
       <FormTitle>Update user</FormTitle>
       <Form onSubmit={onSubmit}>
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="userTypes" value="Select the roles" />
-          </div>
-          <Select id="userTypes" required {...register('type')}>
-            {userTypesQuery.isFetched &&
-              userTypesQuery?.data?.ok &&
-              userTypesQuery.data.data!.map(x => (
-                <option
-                  value={x}
-                  key={x}
-                  selected={user.roles.find(r => r.name == x) !== undefined}
-                >
-                  {x}
-                </option>
-              ))}
-          </Select>
-        </div>
+        {isAdmin && (
+          <>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="userTypes" value="Select the roles" />
+              </div>
+              <Select id="userTypes" required {...register('type')}>
+                {userTypesQuery.isFetched &&
+                  userTypesQuery?.data?.ok &&
+                  userTypesQuery.data.data!.map(x => (
+                    <option
+                      value={x}
+                      key={x}
+                      selected={user.roles.find(r => r.name == x) !== undefined}
+                    >
+                      {x}
+                    </option>
+                  ))}
+              </Select>
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="roles" value="Select the roles" />
+              </div>
+              <Select id="roles" multiple required onChange={onChangeRole}>
+                {rolesQuery.isFetched &&
+                  rolesQuery.data?.ok &&
+                  Object.values(rolesQuery.data.data as object).map(x => (
+                    <option
+                      value={x}
+                      key={x}
+                      selected={user.roles.find(r => r.name == x) !== undefined}
+                    >
+                      {x}
+                    </option>
+                  ))}
+              </Select>
+            </div>
+          </>
+        )}
         <InputGroup
           label="Fullname"
           id="fullName"
@@ -136,24 +161,6 @@ const UpdateUserForm = (user: AppUser) => {
           onChange={onChangeSpecialties}
           errorMessage={errors.specialties?.message}
         />
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="roles" value="Select the roles" />
-          </div>
-          <Select id="roles" multiple required onChange={onChangeRole}>
-            {rolesQuery.isFetched &&
-              rolesQuery.data?.ok &&
-              Object.values(rolesQuery.data.data as object).map(x => (
-                <option
-                  value={x}
-                  key={x}
-                  selected={user.roles.find(r => r.name == x) !== undefined}
-                >
-                  {x}
-                </option>
-              ))}
-          </Select>
-        </div>
         <Button type="submit">Edit</Button>
       </Form>
     </MainLayout>
